@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viagens sem Barreiras - Portal de Acessibilidade</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================================================
+           1. ESTILOS GERAIS E VARIÁVEIS
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #f3f6fa;
+            color: #000000;
+            overflow-x: hidden;
+        }
+
+        .page-screen {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .page-screen.active {
+            display: flex;
+        }
+
+        /* LOGOTIPO SVG VETORIAL NATIVO */
+        .site-logo-svg {
+            height: 48px;
+            width: auto;
+            display: block;
+        }
+
+        .site-logo-svg .icon-path {
+            fill: #60a5fa;
+            transition: fill 0.3s ease;
+        }
+
+        .landing-header .site-logo-svg .icon-path {
+            fill: #93c5fd;
+        }
+
+        /* ==========================================================================
+           2. TELA 1: LANDING PAGE
+           ========================================================================== */
+        #landing-screen {
+            background: linear-gradient(135deg, #051334 0%, #0a2566 100%);
+            flex-direction: column;
+            color: #ffffff;
+        }
+
+        .landing-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 80px;
+            border-bottom: 2px solid #0055ff;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+        }
+
+        .landing-nav {
+            display: flex;
+            align-items: center;
+            gap: 35px;
+        }
+
+        .landing-nav a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: color 0.2s;
+        }
+
+        .landing-nav a:hover, .landing-nav a.active {
+            color: #ffffff;
+        }
+
+        .btn-nav-trigger {
+            cursor: pointer;
+        }
+
+        .btn-login {
+            background-color: #2563eb;
+            color: white !important;
+            padding: 10px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .landing-hero {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 20px;
+            margin-bottom: 80px;
+        }
+
+        .landing-hero h1 {
+            font-size: 64px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .landing-hero h1 span {
+            color: #facc15;
+        }
+
+        .landing-hero p {
+            font-size: 20px;
+            color: #94a3b8;
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        .search-pill-box {
+            background: #ffffff;
+            border-radius: 50px;
+            padding: 10px 15px 10px 40px;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 750px;
+        }
+
+        .search-field-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            flex: 1;
+        }
+
+        .search-field-group label {
+            font-size: 11px;
+            color: #94a3b8;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .search-field-group input, .search-field-group select {
+            border: none;
+            outline: none;
+            font-size: 15px;
+            font-weight: 600;
+            color: #0f172a;
+            width: 100%;
+            background: transparent;
+        }
+
+        .btn-hero-search {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 16px 45px;
+            border-radius: 40px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        /* ==========================================================================
+           3. TELA DE AUTENTICAÇÃO (LOGIN / CADASTRO) - FIEL AO DESIGN DA IMAGEM
+           ========================================================================== */
+        .auth-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 11, 26, 0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .auth-overlay.active {
+            display: flex;
+        }
+
+        .auth-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 900px;
+            min-height: 520px;
+            border-radius: 28px;
+            overflow: hidden;
+            display: flex;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .auth-blue-side {
+            width: 45%;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: #ffffff;
+            padding: 45px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .auth-blue-side h2 {
+            font-size: 38px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .auth-blue-side p {
+            font-size: 15px;
+            color: #bfdbfe;
+            line-height: 1.6;
+        }
+
+        .auth-form-side {
+            width: 55%;
+            padding: 45px 55px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .auth-form-side h3 {
+            font-size: 32px;
+            color: #1d4ed8;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        /* Seletor de Tipo de Usuário (TRAVELER vs BUSINESS) do Banco */
+        .user-type-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #64748b;
+        }
+
+        .user-type-selector label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .user-type-selector input[type="radio"] {
+            accent-color: #1d4ed8;
+        }
+
+        .auth-input-group {
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .auth-input-group input {
+            width: 100%;
+            padding: 14px 20px;
+            background-color: #f1f5f9;
+            border: 1px solid transparent;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #0f172a;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .auth-input-group input:focus {
+            background-color: #ffffff;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 131, 246, 0.1);
+        }
+
+        .forgot-password-link {
+            display: block;
+            text-align: right;
+            font-size: 11px;
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: -8px;
+            margin-bottom: 20px;
+        }
+
+        .btn-auth-submit {
+            width: 100%;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+            margin-bottom: 15px;
+            transition: background 0.2s;
+        }
+
+        .btn-auth-submit:hover {
+            background-color: #1d4ed8;
+        }
+
+        .switch-auth-mode-text {
+            text-align: center;
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+
+        .switch-auth-mode-text span {
+            color: #2563eb;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .social-divider {
+            text-align: center;
+            position: relative;
+            margin-bottom: 20px;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .social-divider::before, .social-divider::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 35%;
+            height: 1px;
+            background-color: #e2e8f0;
+        }
+
+        .social-divider::before { left: 0; }
+        .social-divider::after { right: 0; }
+
+        .social-buttons-container {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-social-auth {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            background: #ffffff;
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-social-auth:hover {
+            background: #f8fafc;
+        }
+
+        .btn-social-auth img {
+            width: 18px;
+            height: 18px;
+        }
+
+        .btn-close-auth {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #94a3b8;
+            cursor: pointer;
+        }
+
+        /* ==========================================================================
+           4. TELA 2: EXPLORAR / PAINEL DE BUSCA (DASHBOARD)
+           ========================================================================== */
+        .sidebar {
+            width: 250px;
+            background-color: #050b1a;
+            padding: 35px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+            flex-shrink: 0;
+        }
+
+        .sidebar-logo-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-section-title {
+            color: #475569;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            margin-bottom: 15px;
+        }
+
+        .sidebar-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: #94a3b8;
+            text-decoration: none;
+            padding: 12px 16px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-link-logout {
+            margin-top: auto;
+            color: #f87171;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+        }
+
+        .dashboard-content {
+            flex: 1;
+            padding: 40px 50px;
+            overflow-y: auto;
+            height: 100vh;
+        }
+
+        .dash-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+        .dash-search-bar {
+            position: relative;
+            width: 500px;
+        }
+
+        .dash-search-bar i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 16px;
+        }
+
+        .dash-search-input {
+            width: 100%;
+            padding: 14px 20px 14px 55px;
+            border: 1px solid #e2e8f0;
+            border-radius: 30px;
+            font-size: 14px;
+            background-color: #ffffff;
+            outline: none;
+        }
+
+        .dash-user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .profile-text {
+            font-size: 16px;
+            font-weight: 500;
+            color: #0f172a;
+        }
+
+        .profile-avatar {
+            width: 45px;
+            height: 45px;
+            background-color: #3b82f6;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .dash-view-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 30px;
+        }
+
+        .workspace-grid {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+        }
+
+        .filter-panel {
+            width: 280px;
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+            border: 1px solid #e2e8f0;
+            flex-shrink: 0;
+        }
+
+        .filter-header-title {
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filter-header-title i {
+            color: #facc15;
+        }
+
+        .filter-group-label {
+            font-size: 11px;
+            color: #94a3b8;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+            font-size: 14px;
+            color: #334155;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .checkbox-item input {
+            width: 18px;
+            height: 18px;
+            accent-color: #000000;
+        }
+
+        .price-range-box {
+            margin-top: 25px;
+            margin-bottom: 25px;
+        }
+
+        .price-slider {
+            width: 100%;
+            accent-color: #3b82f6;
+            margin-bottom: 10px;
+        }
+
+        .price-labels-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        .btn-apply-filters {
+            width: 100%;
+            background-color: #000000;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .cards-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .hotel-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.02);
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card-top-content {
+            display: flex;
+            gap: 24px;
+        }
+
+        .hotel-img-wrapper {
+            width: 240px;
+            height: 160px;
+            border-radius: 16px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .hotel-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hotel-details-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .hotel-name {
+            font-size: 26px;
+            font-weight: 700;
+            color: #000000;
+        }
+
+        .accessibility-score-widget {
+            background-color: #f3f6fa;
+            border-radius: 14px;
+            padding: 16px 20px;
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .widget-caption {
+            font-size: 11px;
+            color: #94a3b8;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar-split {
+            display: flex;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 6px;
+        }
+
+        .bar-red { background-color: #ef4444; width: 3%; }
+        .bar-yellow { background-color: #eab308; width: 12%; }
+        .bar-green { background-color: #22c55e; width: 85%; }
+
+        .progress-legends {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .legend-red { color: #ef4444; }
+        .legend-yellow { color: #ca8a04; }
+        .legend-green { color: #22c55e; }
+
+        .card-bottom-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #f1f5f9;
+            padding-top: 16px;
+        }
+
+        .badges-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .resource-badge {
+            border: 1px solid #e2e8f0;
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+        }
+
+        .resource-badge i {
+            color: #000000;
+            font-size: 14px;
+        }
+
+        .btn-card-action {
+            background-color: #000000;
+            color: white;
+            border: none;
+            padding: 14px 40px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="landing-screen" class="page-screen active">
+        
+        <header class="landing-header">
+            <div class="logo-area">
+                <svg class="site-logo-svg" viewBox="0 0 450 250" xmlns="http://www.w3.org/2000/svg">
+                    <path class="icon-path" d="M180,80 L280,30 C300,20 340,25 360,45 C380,65 375,95 340,115 L140,165" stroke-width="4" fill="none"/>
+                    <path class="icon-path" d="M50,190 C90,195 120,170 150,150 C180,130 195,110 230,120 L390,75 C420,65 435,75 425,95 C410,120 330,155 240,190 C180,215 120,230 70,205 Z"/>
+                    <circle class="icon-path" cx="195" cy="125" r="12" />
+                    <path class="icon-path" d="M195,142 C180,142 168,154 168,169 C168,184 180,196 195,196 C208,196 218,187 221,175 L208,175 C205,181 199,185 195,185 C186,185 179,178 179,169 C179,160 186,153 195,153 C199,153 204,156 207,161 L220,156 C215,148 206,142 195,142 Z" />
+                    <path class="icon-path" d="M196,140 L215,140 L225,165 L245,168 L243,178 L220,175 L210,152 L196,152 Z" />
+                </svg>
+            </div>
+            <nav class="landing-nav">
+                <a href="#" class="active">DESTINOS</a>
+                <a href="#" id="goto-explore-menu">ACESSIBILIDADE</a>
+                <a href="#">SOBRE NÓS</a>
+                <a href="#" class="btn-nav-trigger" id="nav-create-acc">CRIAR CONTA</a>
+                <a href="#" class="btn-login btn-nav-trigger" id="nav-login">ENTRAR</a>
+            </nav>
+        </header>
+
+        <main class="landing-hero">
+            <h1>Viagens sem <span>Barreiras</span></h1>
+            <p>O primeiro portal focado em acessibilidade e transparência total de preços</p>
+
+            <div class="search-pill-box">
+                <div class="search-field-group">
+                    <label>Onde?</label>
+                    <input type="text" placeholder="Destinos ou hotéis..." value="Maceió">
+                </div>
+                <div class="search-field-group" style="border-left: 1px solid #e2e8f0; padding-left: 25px;">
+                    <label>Acessibilidade</label>
+                    <select>
+                        <option>Qualquer Nível</option>
+                        <option>Excelente (Mais de 80%)</option>
+                        <option>Intermediária</option>
+                    </select>
+                </div>
+                <button class="btn-hero-search" id="btn-trigger-search">BUSCAR</button>
+            </div>
+        </main>
+
+    </div>
+
+    <div id="auth-modal" class="auth-overlay">
+        <div class="auth-card">
+            <button class="btn-close-auth" id="close-auth-btn">&times;</button>
+            
+            <div class="auth-blue-side" id="auth-side-panel">
+                <h2 id="auth-side-title">Bem-vindo de volta</h2>
+                <p id="auth-side-desc">Acesse sua plataforma de guias e destinos com segurança.</p>
+            </div>
+
+            <div class="auth-form-side">
+                <h3 id="auth-form-title">Login</h3>
+                
+                <div class="user-type-selector">
+                    <label><input type="radio" name="user_type" value="TRAVELER" checked> Viajante</label>
+                    <label><input type="radio" name="user_type" value="BUSINESS"> Negócio</label>
+                </div>
+
+                <form id="main-auth-form">
+                    <div class="auth-input-group" id="group-username" style="display: none;">
+                        <input type="text" id="input-username" placeholder="Nome de usuário">
+                    </div>
+                    
+                    <div class="auth-input-group">
+                        <input type="email" id="input-email" placeholder="E-mail" required>
+                    </div>
+                    
+                    <div class="auth-input-group">
+                        <input type="password" id="input-password" placeholder="Senha" required>
+                    </div>
+
+                    <a href="#" class="forgot-password-link" id="link-forgot-pass">Esqueceu a Senha?</a>
+
+                    <button type="submit" class="btn-auth-submit" id="btn-submit-form">ENTRAR</button>
+                </form>
+
+                <p class="switch-auth-mode-text" id="switch-mode-container">
+                    Precisa recuperar sua conta? <span id="trigger-mode-switch">Clique Aqui</span>
+                </p>
+
+                <div class="social-divider">ou entre com</div>
+
+                <div class="social-buttons-container">
+                    <button class="btn-social-auth">
+                        <img src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/web-24dp/copy_of_2x_web_24dp.png" alt="Google"> Google
+                    </button>
+                    <button class="btn-social-auth" style="background-color: #1877f2; color: white; border: none;">
+                        <i class="fa-brands fa-facebook-f"></i> Facebook
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="explore-screen" class="page-screen">
+        
+        <aside class="sidebar">
+            <div class="sidebar-logo-container">
+                <svg class="site-logo-svg" viewBox="0 0 450 250" xmlns="http://www.w3.org/2000/svg">
+                    <path class="icon-path" d="M180,80 L280,30 C300,20 340,25 360,45 C380,65 375,95 340,115 L140,165" stroke-width="4" fill="none"/>
+                    <path class="icon-path" d="M50,190 C90,195 120,170 150,150 C180,130 195,110 230,120 L390,75 C420,65 435,75 425,95 C410,120 330,155 240,190 C180,215 120,230 70,205 Z"/>
+                    <circle class="icon-path" cx="195" cy="125" r="12" />
+                    <path class="icon-path" d="M195,142 C180,142 168,154 168,169 C168,184 180,196 195,196 C208,196 218,187 221,175 L208,175 C205,181 199,185 195,185 C186,185 179,178 179,169 C179,160 186,153 195,153 C199,153 204,156 207,161 L220,156 C215,148 206,142 195,142 Z" />
+                    <path class="icon-path" d="M196,140 L215,140 L225,165 L245,168 L243,178 L220,175 L210,152 L196,152 Z" />
+                </svg>
+            </div>
+
+            <div>
+                <p class="sidebar-section-title">MENU PRINCIPAL</p>
+                <div class="sidebar-menu">
+                    <a href="#" class="nav-link" id="btn-back-home"><i class="fa-solid fa-house"></i> Início</a>
+                    <a href="#" class="nav-link active"><i class="fa-solid fa-magnifying-glass"></i> Explorar</a>
+                    <a href="#" class="nav-link"><i class="fa-solid fa-heart"></i> Favoritos</a>
+                </div>
+            </div>
+
+            <div>
+                <p class="sidebar-section-title">MINHA CONTA</p>
+                <div class="sidebar-menu">
+                    <a href="#" class="nav-link"><i class="fa-solid fa-user"></i> Meu Perfil</a>
+                    <a href="#" class="nav-link"><i class="fa-solid fa-clock-rotate-left"></i> Histórico</a>
+                </div>
+            </div>
+
+            <a href="#" class="nav-link-logout" id="btn-logout-sidebar"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair Conta</a>
+        </aside>
+
+        <main class="dashboard-content">
+            
+            <header class="dash-header">
+                <div class="dash-search-bar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" class="dash-search-input" placeholder="Pesquisar cidades ou pontos turísticos...">
+                </div>
+                <div class="dash-user-profile">
+                    <span class="profile-text" id="dash-username-display">Olá, Viajante!</span>
+                    <div class="profile-avatar">V</div>
+                </div>
+            </header>
+
+            <h2 class="dash-view-title">Explorar</h2>
+
+            <div class="workspace-grid">
+                <aside class="filter-panel">
+                    <h3 class="filter-header-title"><i class="fa-solid fa-sliders"></i> Refinar filtros</h3>
+                    
+                    <span class="filter-group-label">Acessibilidade</span>
+                    <label class="checkbox-item"><input type="checkbox" checked> Acesso Cadeirante</label>
+                    <label class="checkbox-item"><input type="checkbox" checked> Braille / Sonoro</label>
+                    <label class="checkbox-item"><input type="checkbox" checked> Guia de Libras</label>
+
+                    <div class="price-range-box">
+                        <span class="filter-group-label">Faixa de Preço</span>
+                        <input type="range" class="price-slider" min="100" max="2000" value="750">
+                        <div class="price-labels-row"><span>R$ 500</span><span>R$ 1000 +</span></div>
+                    </div>
+
+                    <button class="btn-apply-filters">Filtrar</button>
+                </aside>
+
+                <div class="cards-column">
+                    <article class="hotel-card">
+                        <div class="card-top-content">
+                            <div class="hotel-img-wrapper">
+                                <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=400&q=80" alt="Maceió">
+                            </div>
+                            <div class="hotel-details-box">
+                                <h3 class="hotel-name">Maceió - Ponta Verde</h3>
+                                <div class="accessibility-score-widget">
+                                    <p class="widget-caption">Nível de Acessibilidade</p>
+                                    <div class="progress-bar-split"><div class="bar-red"></div><div class="bar-yellow"></div><div class="bar-green"></div></div>
+                                    <div class="progress-legends">
+                                        <span class="legend-red">Ruim (3%)</span>
+                                        <span class="legend-yellow">Bom (12%)</span>
+                                        <span class="legend-green">Excelente (85%)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-bottom-bar">
+                            <div class="badges-row">
+                                <div class="resource-badge"><i class="fa-solid fa-wheelchair"></i> Rampas</div>
+                                <div class="resource-badge"><i class="fa-solid fa-ellipsis-vertical"></i> Braille</div>
+                            </div>
+                            <button class="btn-card-action">CONHECER</button>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Telas de visualização principal
+        const landingScreen = document.getElementById('landing-screen');
+        const exploreScreen = document.getElementById('explore-screen');
+        const authModal = document.getElementById('auth-modal');
+
+        // Botões de navegação e gatilhos de ação
+        const btnTriggerSearch = document.getElementById('btn-trigger-search');
+        const gotoExploreMenu = document.getElementById('goto-explore-menu');
+        const btnBackHome = document.getElementById('btn-back-home');
+        const btnLogoutSidebar = document.getElementById('btn-logout-sidebar');
+
+        // Elementos de controle da janela de autenticação
+        const navLogin = document.getElementById('nav-login');
+        const navCreateAcc = document.getElementById('nav-create-acc');
+        const closeAuthBtn = document.getElementById('close-auth-btn');
+        const triggerModeSwitch = document.getElementById('trigger-mode-switch');
+
+        // Elementos dinâmicos do formulário
+        const authSidePanel = document.getElementById('auth-side-panel');
+        const authSideTitle = document.getElementById('auth-side-title');
+        const authSideDesc = document.getElementById('auth-side-desc');
+        const authFormTitle = document.getElementById('auth-form-title');
+        const groupUsername = document.getElementById('group-username');
+        const inputUsername = document.getElementById('input-username');
+        const linkForgotPass = document.getElementById('link-forgot-pass');
+        const btnSubmitForm = document.getElementById('btn-submit-form');
+        const switchModeContainer = document.getElementById('switch-mode-container');
+        const mainAuthForm = document.getElementById('main-auth-form');
+
+        // Estado atual do formulário: 'LOGIN' ou 'REGISTER'
+        let currentAuthMode = 'LOGIN';
+
+        // Alterna a exibição das telas principais do site
+        function navigateTo(screen) {
+            landingScreen.classList.remove('active');
+            exploreScreen.classList.remove('active');
+            screen.classList.add('active');
+        }
+
+        // Configura visualmente o formulário de login ou cadastro baseado nas imagens enviadas
+        function setAuthMode(mode) {
+            currentAuthMode = mode;
+            if (mode === 'LOGIN') {
+                authSideTitle.innerText = "Bem-vindo de volta";
+                authSideDesc.innerText = "Acesse sua plataforma de guias e destinos com segurança.";
+                authFormTitle.innerText = "Login";
+                groupUsername.style.display = "none";
+                inputUsername.removeAttribute('required');
+                linkForgotPass.style.display = "block";
+                btnSubmitForm.innerText = "ENTRAR";
+                switchModeContainer.innerHTML = 'Precisa recuperar sua conta? <span id="trigger-mode-switch">Clique Aqui</span>';
+            } else {
+                authSideTitle.innerText = "Bem-vindo!";
+                authSideDesc.innerText = "Cadastre-se para novas experiências e melhor possibilidades de usar as ferramentas.";
+                authFormTitle.innerText = "Criar Login";
+                groupUsername.style.display = "block";
+                inputUsername.setAttribute('required', 'true');
+                linkForgotPass.style.display = "none";
+                btnSubmitForm.innerText = "CADASTRAR";
+                switchModeContainer.innerHTML = 'Já possui uma conta? <span id="trigger-mode-switch">Faça Login</span>';
+            }
+            // Readiciona o event listener ao novo span gerado dinamicamente
+            document.getElementById('trigger-mode-switch').addEventListener('click', () => {
+                setAuthMode(currentAuthMode === 'LOGIN' ? 'REGISTER' : 'LOGIN');
+            });
+        }
+
+        // Eventos de Navegação Direta
+        btnTriggerSearch.addEventListener('click', () => navigateTo(exploreScreen));
+        gotoExploreMenu.addEventListener('click', (e) => { e.preventDefault(); navigateTo(exploreScreen); });
+        btnBackHome.addEventListener('click', (e) => { e.preventDefault(); navigateTo(landingScreen); });
+        btnLogoutSidebar.addEventListener('click', (e) => { e.preventDefault(); navigateTo(landingScreen); });
+
+        // Eventos da Modal de Login / Cadastro
+        navLogin.addEventListener('click', (e) => { e.preventDefault(); setAuthMode('LOGIN'); authModal.classList.add('active'); });
+        navCreateAcc.addEventListener('click', (e) => { e.preventDefault(); setAuthMode('REGISTER'); authModal.classList.add('active'); });
+        closeAuthBtn.addEventListener('click', () => authModal.classList.remove('active'));
+
+        // Fecha a modal se o usuário clicar na área escura de fora
+        window.addEventListener('click', (e) => { if (e.target === authModal) authModal.classList.remove('active'); });
+
+        // Submissão Simulada do Formulário conectando logicamente com a tabela 'users'
+        mainAuthForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const selectedUserType = document.querySelector('input[name="user_type"]:checked').value;
+            const emailValue = document.getElementById('input-email').value;
+            
+            // Simula persistência e login bem-sucedido indo direto para o painel de busca
+            authModal.classList.remove('active');
+            document.getElementById('dash-username-display').innerText = `Olá, ${emailValue.split('@')[0]} (${selectedUserType})`;
+            navigateTo(exploreScreen);
+            mainAuthForm.reset();
+        });
+    </script>
+</body>
+</html>

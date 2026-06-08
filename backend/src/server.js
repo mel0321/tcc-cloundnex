@@ -1,21 +1,35 @@
-// 1. Importamos o Express
 const express = require('express');
+const sqlite3 = require('sqlite3');
+const { open } = require('sqlite');
+const path = require('path');
+const fs = require('fs'); // Importamos o módulo de arquivos do Node
 
-// 2. Criamos a instância do servidor (a variável recomendada!)
 const server = express();
-
-// 3. Permitimos que o servidor leia JSON nas requisições
 server.use(express.json());
 
-// 4. Definimos a porta onde o servidor vai funcionar
 const PORT = 3000;
+let db;
 
-// 5. Criamos a primeira rota (responde a GET em '/')
-server.get('/', (req, res) => {
-    res.send('Servidor funcionando dentro da pasta src!');
-});
+// Conexão com o Banco e Execução Automática do seu schema.sql
+(async () => {
+    try {
+        // 1. Abre ou cria o arquivo físico do banco de dados
+        db = await open({
+            filename: path.join(__dirname, 'database', 'database.sqlite'),
+            driver: sqlite3.Database
+        });
+        
+        // 2. Lê o arquivo schema.sql que você já criou
+        const schemaPath = path.join(__dirname, 'database', 'schema.sql');
+        const schemaSql = fs.readFileSync(schemaPath, 'utf8');
+        
+        // 3. Executa os comandos do seu schema dentro do banco
+        await db.exec(schemaSql);
+        
+        console.log('Banco de dados inicializado com o seu schema.sql com sucesso!');
+    } catch (error) {
+        console.error('Erro ao carregar o banco de dados ou o schema.sql:', error);
+    }
+})();
 
-// 6. Ligamos o servidor na porta definida
-server.listen(PORT, () => {
-    console.log(`Servidor rodando em http://localhost:${PORT}`);
-});
+// ... restante das rotas (POST /api/auth/register, etc.) seguem iguais
