@@ -161,7 +161,7 @@
         }
 
         /* ==========================================================================
-           3. DESIGN DA CAIXA DE CADASTRO EXATA (ESTILO ORIGINAL)
+           3. DESIGN DA CAIXA DE CADASTRO EXATA (SEM LINKS DE TEXTO)
            ========================================================================== */
         .auth-modal-overlay {
             position: fixed;
@@ -211,6 +211,33 @@
         .auth-title { font-size: 24px; font-weight: 700; color: #051334; margin-bottom: 8px; text-align: left; }
         .auth-subtitle { font-size: 13px; color: #64748b; margin-bottom: 25px; text-align: left; }
 
+        /* Botoes de tipo (Viajante / Negocio) estruturados */
+        .tipo-usuario-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .btn-tipo {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            background: #ffffff;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #051334;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+        }
+
+        .btn-tipo.active {
+            border-color: #0055ff;
+            background-color: #0055ff;
+            color: #ffffff;
+        }
+
         .auth-form { display: none; flex-direction: column; gap: 15px; }
         .auth-form.active { display: flex; }
 
@@ -244,8 +271,19 @@
             text-transform: uppercase;
         }
 
-        .auth-switcher-text { font-size: 13px; color: #64748b; text-align: center; margin-top: 20px; }
-        .auth-switcher-text span { color: #0055ff; font-weight: 600; cursor: pointer; text-decoration: underline; }
+        .auth-footer-toggle {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .auth-footer-toggle span {
+            color: #0055ff;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -307,74 +345,110 @@
             <button class="btn-close-auth" onclick="fecharModal()"><i class="fa-solid fa-xmark"></i></button>
 
             <h3 class="auth-title" id="m-title">Cadastre-se</h3>
-            <p class="auth-subtitle" id="m-subtitle">Preencha os dados abaixo para criar sua conta de viajante.</p>
+            <p class="auth-subtitle" id="m-subtitle">Escolha o tipo de perfil e preencha os dados.</p>
 
-            <form id="f-cadastro" class="auth-form active" onsubmit="event.preventDefault();">
+            <div class="tipo-usuario-container">
+                <button class="btn-tipo active" id="tipo-viajante" onclick="setTipo('viajante')">Viajante</button>
+                <button class="btn-tipo" id="tipo-negocio" onclick="setTipo('negocio')">Negócio</button>
+            </div>
+
+            <form id="f-cad-viajante" class="auth-form" onsubmit="event.preventDefault();">
                 <div class="input-group"><label>Nome Completo</label><input type="text" class="input-field" placeholder="Nome Completo" required></div>
                 <div class="input-group"><label>E-mail</label><input type="email" class="input-field" placeholder="seu@email.com" required></div>
                 <div class="input-group"><label>Telemóvel / Celular</label><input type="tel" class="input-field" placeholder="+351 900 000 000" required></div>
                 <div class="input-group"><label>Senha</label><input type="password" class="input-field" placeholder="Crie uma senha" required></div>
                 <div class="input-group"><label>Confirmar Senha</label><input type="password" class="input-field" placeholder="Repita a senha" required></div>
-                <button type="submit" class="btn-auth-submit">CADASTRAR-SE</button>
-                
-                <p class="auth-switcher-text">Quer registrar sua empresa? <span onclick="mudarFluxoNegocio()">Cadastrar Negócio</span></p>
-                <p class="auth-switcher-text" style="margin-top: 5px;">Já possui conta? <span onclick="trocarTela('login')">Acessar conta</span></p>
+                <button type="submit" class="btn-auth-submit">CADASTRAR VIAJANTE</button>
             </form>
 
-            <form id="f-negocio" class="auth-form" onsubmit="event.preventDefault();">
-                <div class="input-group"><label>Nome do Negócio</label><input type="text" class="input-field" placeholder="Sua Empresa" required></div>
+            <form id="f-cad-negocio" class="auth-form" onsubmit="event.preventDefault();">
+                <div class="input-group"><label>Nome do Negócio / Empresa</label><input type="text" class="input-field" placeholder="Ex: Hotel Central" required></div>
                 <div class="input-group"><label>E-mail Corporativo</label><input type="email" class="input-field" placeholder="contato@empresa.com" required></div>
-                <div class="input-group"><label>Telefone Comercial</label><input type="tel" class="input-field" placeholder="+351" required></div>
+                <div class="input-group"><label>Telefone Comercial</label><input type="tel" class="input-field" placeholder="+351 200 000 000" required></div>
                 <div class="input-group"><label>Senha</label><input type="password" class="input-field" placeholder="******" required></div>
                 <div class="input-group"><label>Confirmar Senha</label><input type="password" class="input-field" placeholder="******" required></div>
                 <button type="submit" class="btn-auth-submit" style="background-color: #051334;">CADASTRAR EMPRESA</button>
-                
-                <p class="auth-switcher-text">Voltar para <span onclick="trocarTela('cadastro')">Cadastro de Viajante</span></p>
             </form>
 
-            <form id="f-login" class="auth-form" onsubmit="event.preventDefault();">
-                <div class="input-group"><label>E-mail</label><input type="email" class="input-field" placeholder="seu@email.com" required></div>
+            <form id="f-login-viajante" class="auth-form" onsubmit="event.preventDefault();">
+                <div class="input-group"><label>E-mail de Viajante</label><input type="email" class="input-field" placeholder="seu@email.com" required></div>
                 <div class="input-group"><label>Senha</label><input type="password" class="input-field" placeholder="******" required></div>
-                <button type="submit" class="btn-auth-submit">ENTRAR</button>
-                <p class="auth-switcher-text">Não tem conta? <span onclick="trocarTela('cadastro')">Criar agora</span></p>
+                <button type="submit" class="btn-auth-submit">ENTRAR COMO VIAJANTE</button>
             </form>
+
+            <form id="f-login-negocio" class="auth-form" onsubmit="event.preventDefault();">
+                <div class="input-group"><label>E-mail Corporativo</label><input type="email" class="input-field" placeholder="empresa@email.com" required></div>
+                <div class="input-group"><label>Senha</label><input type="password" class="input-field" placeholder="******" required></div>
+                <button type="submit" class="btn-auth-submit" style="background-color: #051334;">ACESSAR PAINEL</button>
+            </form>
+
+            <div class="auth-footer-toggle" id="footer-toggle-box">
+                <p id="toggle-text">Já possui conta? <span onclick="mudarModo()">Acessar conta</span></p>
+            </div>
 
         </div>
     </div>
 
     <script>
-        function abrirModal(t) {
+        let modoAtual = 'cadastro'; // cadastro ou login
+        let tipoAtual = 'viajante'; // viajante ou negocio
+
+        function abrirModal(modo) {
             document.getElementById('auth-modal').classList.add('active');
-            trocarTela(t);
+            modoAtual = modo;
+            atualizarInterface();
         }
 
-        function fecharModal() { document.getElementById('auth-modal').classList.remove('active'); }
-
-        function mudarFluxoNegocio() {
-            document.getElementById('f-cadastro').classList.remove('active');
-            document.getElementById('f-login').classList.remove('active');
-            document.getElementById('f-negocio').classList.add('active');
-            document.getElementById('m-title').innerText = "Cadastrar Negócio";
-            document.getElementById('m-subtitle').innerText = "Registre sua empresa ou serviço acessível.";
+        function fecharModal() { 
+            document.getElementById('auth-modal').classList.remove('active'); 
         }
 
-        function trocarTela(t) {
-            document.getElementById('f-cadastro').classList.remove('active');
-            document.getElementById('f-negocio').classList.remove('active');
-            document.getElementById('f-login').classList.remove('active');
+        function setTipo(tipo) {
+            tipoAtual = tipo;
+            document.getElementById('tipo-viajante').classList.toggle('active', tipo === 'viajante');
+            document.getElementById('tipo-negocio').classList.toggle('active', tipo === 'negocio');
+            atualizarInterface();
+        }
 
-            if (t === 'cadastro') {
-                document.getElementById('m-title').innerText = "Cadastre-se";
-                document.getElementById('m-subtitle').innerText = "Preencha os dados abaixo para criar sua conta de viajante.";
-                document.getElementById('f-cadastro').classList.add('active');
+        function mudarModo() {
+            modoAtual = (modoAtual === 'cadastro') ? 'login' : 'cadastro';
+            atualizarInterface();
+        }
+
+        function atualizarInterface() {
+            // Esconde todos os forms primeiro
+            document.getElementById('f-cad-viajante').classList.remove('active');
+            document.getElementById('f-cad-negocio').classList.remove('active');
+            document.getElementById('f-login-viajante').classList.remove('active');
+            document.getElementById('f-login-negocio').classList.remove('active');
+
+            const title = document.getElementById('m-title');
+            const toggleText = document.getElementById('toggle-text');
+
+            if (modoAtual === 'cadastro') {
+                title.innerText = "Cadastre-se";
+                toggleText.innerHTML = 'Já possui conta? <span onclick="mudarModo()">Acessar conta</span>';
+                
+                if (tipoAtual === 'viajante') {
+                    document.getElementById('f-cad-viajante').classList.add('active');
+                } else {
+                    document.getElementById('f-cad-negocio').classList.add('active');
+                }
             } else {
-                document.getElementById('m-title').innerText = "Acessar Conta";
-                document.getElementById('m-subtitle').innerText = "Entre com seus dados cadastrados.";
-                document.getElementById('f-login').classList.add('active');
+                title.innerText = "Acessar Conta";
+                toggleText.innerHTML = 'Não tem conta? <span onclick="mudarModo()">Criar agora</span>';
+
+                if (tipoAtual === 'viajante') {
+                    document.getElementById('f-login-viajante').classList.add('active');
+                } else {
+                    document.getElementById('f-login-negocio').classList.add('active');
+                }
             }
         }
 
-        document.getElementById('auth-modal').addEventListener('click', function(e) { if (e.target === this) fecharModal(); });
+        document.getElementById('auth-modal').addEventListener('click', function(e) { 
+            if (e.target === this) fecharModal(); 
+        });
     </script>
 </body>
 </html>
