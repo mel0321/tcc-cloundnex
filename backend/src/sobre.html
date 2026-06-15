@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viagens sem Barreiras - Sobre Nós</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CONFIGURAÇÕES GERAIS E ANIMAÇÕES */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; transition: all 0.3s ease; }
+        body { background-color: #f3f6fa; color: #051334; padding-top: 140px; font-size: 16px; overflow-x: hidden; }
+        
+        /* ACESSIBILIDADE: TAMANHO DE FONTE */
+        body.fonte-grande { font-size: 20px; }
+        body.fonte-grande h1 { font-size: 42px; }
+        body.fonte-grande h2 { font-size: 28px; }
+        body.fonte-grande p, body.fonte-grande li, body.fonte-grande .membro-cargo { font-size: 18px; }
+
+        /* ACESSIBILIDADE: ALTO CONTRASTE */
+        body.alto-contraste { background-color: #000000 !important; color: #ffffff !important; }
+        body.alto-contraste .landing-header { background-color: #000000 !important; border-bottom: 2px solid #ffff00; }
+        body.alto-contraste .landing-nav a { color: #ffffff !important; }
+        body.alto-contraste .landing-nav a.active { color: #ffff00 !important; }
+        body.alto-contraste .info-card, 
+        body.alto-contraste .valor-box,
+        body.alto-contraste .membro-card,
+        body.alto-contraste .acc-panel-box,
+        body.alto-contraste .contacto-item { background: #000000 !important; border: 2px solid #ffff00 !important; color: #ffffff !important; }
+        body.alto-contraste h1, body.alto-contraste h2, body.alto-contraste h3, body.alto-contraste i { color: #ffff00 !important; }
+        body.alto-contraste .membro-foto { border: 2px solid #ffff00; }
+        body.alto-contraste .btn-entrar { border: 1px solid #ffff00 !important; color: #ffff00 !important; }
+        body.alto-contraste .btn-entrar:hover { background: #ffff00 !important; color: #000000 !important; }
+        body.alto-contraste .btn-criar { background: #ffff00 !important; color: #000000 !important; }
+        body.alto-contraste .btn-criar:hover { background: #bfbf00 !important; }
+
+        /* HEADER (MENU DE NAVEGAÇÃO UNIFICADO) */
+        .site-logo-svg { height: 52px; width: auto; display: block; }
+        .site-logo-svg .accent-blue { fill: #0055ff; }
+        .site-logo-svg .accent-dark { fill: #051334; }
+        .landing-header { position: fixed; top: 0; left: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 24px 80px; z-index: 100; background-color: rgba(243, 246, 250, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid #e2e8f0; }
+        .landing-nav { display: flex; align-items: center; gap: 30px; }
+        .landing-nav a { color: #051334; text-decoration: none; font-size: 14px; font-weight: 700; letter-spacing: 0.5px; }
+        .landing-nav a:hover, .landing-nav a.active { color: #0055ff; }
+
+        /* BOTÕES DE AUTENTICAÇÃO */
+        .nav-auth { display: flex; align-items: center; gap: 15px; margin-left: 15px; }
+        .btn-entrar { color: #0055ff !important; border: 1px solid #0055ff; padding: 8px 18px; border-radius: 20px; }
+        .btn-entrar:hover { background-color: #0055ff; color: #ffffff !important; }
+        .btn-criar { background-color: #0055ff; color: #ffffff !important; padding: 9px 20px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0, 85, 255, 0.2); }
+        .btn-criar:hover { background-color: #003ccb; transform: translateY(-1px); }
+
+        /* LAYOUT PRINCIPAL */
+        .main-container { max-width: 1100px; margin: 0 auto 80px auto; padding: 0 20px; animation: fadeInUp 0.6s ease-out; }
+        .info-card { background: #ffffff; border-radius: 24px; padding: 50px; border: 1px solid #e2e8f0; box-shadow: 0 12px 40px rgba(5, 19, 52, 0.04); }
+        
+        h1 { font-size: 38px; font-weight: 700; margin-bottom: 20px; color: #051334; }
+        .subtitle { font-size: 18px; color: #64748b; line-height: 1.6; margin-bottom: 40px; }
+        h2 { font-size: 24px; font-weight: 700; margin: 45px 0 20px 0; color: #051334; display: flex; align-items: center; gap: 12px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
+        h2 i { color: #0055ff; }
+        p { line-height: 1.8; margin-bottom: 20px; color: #334155; }
+
+        .acc-panel-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px; display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 30px; }
+        .acc-btn { background: #ffffff; border: 1px solid #cbd5e1; padding: 12px 24px; border-radius: 30px; font-weight: 600; font-size: 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; color: #334155; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
+        .acc-btn:hover { background: #0055ff; color: #ffffff; border-color: #0055ff; transform: translateY(-2px); }
+
+        /* GRID DE MISSÃO, VISÃO E VALORES */
+        .valores-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-top: 25px; }
+        .valor-box { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 20px; padding: 30px; text-align: left; }
+        .valor-box i { font-size: 32px; color: #0055ff; margin-bottom: 15px; display: block; }
+        .valor-box h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; color: #051334; }
+        .valor-box p { font-size: 14px; color: #64748b; line-height: 1.6; margin: 0; }
+
+        /* EQUIPA GRID */
+        .equipa-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px; margin-top: 25px; }
+        .membro-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 20px; padding: 30px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.01); }
+        .membro-card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(5,19,52,0.05); }
+        .membro-foto { width: 100px; height: 100px; background-color: #f1f5f9; border-radius: 50%; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; font-size: 38px; color: #0055ff; border: 1px solid #e2e8f0; }
+        .membro-card h3 { font-size: 18px; font-weight: 700; color: #051334; margin-bottom: 5px; }
+        .membro-cargo { font-size: 14px; color: #64748b; font-weight: 600; margin-bottom: 12px; }
+
+        /* CONTACTOS */
+        .contacto-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 25px; }
+        .contacto-item { display: flex; align-items: center; gap: 20px; background: #fafafa; border: 1px solid #e2e8f0; padding: 20px; border-radius: 16px; text-decoration: none; color: inherit; }
+        .contacto-item:hover { border-color: #0055ff; background: #f8fafc; }
+        .contacto-item i { font-size: 24px; color: #0055ff; background: #ffffff; padding: 12px; border-radius: 12px; border: 1px solid #e2e8f0; }
+        .contacto-text h4 { font-size: 14px; color: #64748b; font-weight: 500; }
+        .contacto-text p { font-size: 16px; font-weight: 600; color: #051334; margin: 0; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 992px) {
+            .landing-header { padding: 20px 30px; flex-direction: column; gap: 15px; }
+            body { padding-top: 180px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="landing-header">
+        <div class="landing-brand-wrapper">
+            <svg class="site-logo-svg" viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg">
+                <rect class="accent-blue" x="20" y="20" width="16" height="40" rx="8" />
+                <rect class="accent-blue" x="42" y="28" width="16" height="32" rx="8" />
+                <rect class="accent-dark" x="64" y="12" width="16" height="48" rx="8" />
+                <text class="accent-dark" x="95" y="48" font-size="22" font-weight="700">Viagens sem</text>
+                <text class="accent-blue" x="95" y="68" font-size="22" font-weight="700">Barreiras</text>
+            </svg>
+        </div>
+        <nav class="landing-nav">
+            <a href="index.html">INÍCIO</a>
+            <a href="destinos.html">DESTINOS</a>
+            <a href="acessibilidade.html">ACESSIBILIDADE</a>
+            <a href="sobre.html" class="active">SOBRE NÓS</a>
+            
+            <div class="nav-auth">
+                <a href="login.html" class="btn-entrar">Entrar</a>
+                <a href="cadastro.html" class="btn-criar">Criar Conta</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="main-container">
+        <div class="acc-panel-box">
+            <button class="acc-btn" onclick="mudarFonte(1)"><i class="fa-solid fa-font"></i> Aumentar Texto</button>
+            <button class="acc-btn" onclick="mudarFonte(-1)"><i class="fa-solid fa-font fa-sm"></i> Restaurar Fonte</button>
+            <button class="acc-btn" onclick="alternarContraste()"><i class="fa-solid fa-circle-half-stroke"></i> Modo Alto Contraste</button>
+        </div>
+
+        <div class="info-card">
+            <h1>Quem Somos</h1>
+            <p class="subtitle">Conheça o propósito, os valores e a equipa por trás do portal que está a transformar o turismo inclusivo.</p>
+            
+            <h2><i class="fa-solid fa-compass"></i> A Nossa Missão</h2>
+            <p>O portal <strong>Viagens sem Barreiras</strong> nasceu da constatação de que o direito de explorar o mundo deve ser universal. Unimos tecnologia, engenharia e a força da comunidade para eliminar de vez as barreiras invisíveis do turismo.</p>
+
+            <div class="valores-grid">
+                <div class="valor-box">
+                    <i class="fa-solid fa-bullseye"></i>
+                    <h3>Missão</h3>
+                    <p>Mapear e dar transparência às condições de acessibilidade dos destinos turísticos, empoderando o viajante com autonomia e segurança.</p>
+                </div>
+                <div class="valor-box">
+                    <i class="fa-solid fa-eye"></i>
+                    <h3>Visão</h3>
+                    <p>Tornar-se a maior e mais fiável referência de turismo acessível e Desenho Universal.</p>
+                </div>
+                <div class="valor-box">
+                    <i class="fa-solid fa-heart"></i>
+                    <h3>Valores</h3>
+                    <p>Inclusão radical, transparência técnica, empatia prática e colaboração ativa com a comunidade.</p>
+                </div>
+            </div>
+
+            <h2><i class="fa-solid fa-users"></i> A Equipa</h2>
+            <div class="equipa-grid">
+                <div class="membro-card">
+                    <div class="membro-foto"><i class="fa-solid fa-user"></i></div>
+                    <h3>Melânia</h3>
+                    <div class="membro-cargo">1° Integrante</div>
+                </div>
+                <div class="membro-card">
+                    <div class="membro-foto"><i class="fa-solid fa-user-tie"></i></div>
+                    <h3>Gabriel Kendy</h3>
+                    <div class="membro-cargo">2° Integrante</div>
+                </div>
+            </div>
+
+            <h2><i class="fa-solid fa-envelope"></i> Fale Connosco</h2>
+            <div class="contacto-container">
+                <a href="mailto:contato@viagenssembarreiras.com" class="contacto-item">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <div class="contacto-text">
+                        <h4>E-mail Oficial</h4>
+                        <p>contato@viagenssembarreiras.com</p>
+                    </div>
+                </a>
+                <a href="tel:+5511999999999" class="contacto-item">
+                    <i class="fa-solid fa-phone"></i>
+                    <div class="contacto-text">
+                        <h4>Telefone / WhatsApp</h4>
+                        <p>+55 (11) 99999-9999</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function mudarFonte(direcao) {
+            if(direcao === 1) document.body.classList.add('fonte-grande');
+            else document.body.classList.remove('fonte-grande');
+        }
+
+        function alternarContraste() {
+            document.body.classList.toggle('alto-contraste');
+        }
+    </script>
+</body>
+</html>

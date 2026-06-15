@@ -4,273 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Viagens sem Barreiras - Início</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
+        /* CONFIGURAÇÕES GERAIS E ANIMAÇÕES */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; transition: all 0.3s ease; }
+        body { background-color: #f3f6fa; color: #051334; padding-top: 140px; font-size: 16px; overflow-x: hidden; }
+        
+        /* ACESSIBILIDADE: TAMANHO DE FONTE */
+        body.fonte-grande { font-size: 20px; }
+        body.fonte-grande h1 { font-size: 46px; }
+        body.fonte-grande h2 { font-size: 30px; }
+        body.fonte-grande p { font-size: 18px; }
 
-        body {
-            background-color: #f3f6fa;
-            color: #000000;
-            overflow-x: hidden;
-        }
+        /* ACESSIBILIDADE: ALTO CONTRASTE */
+        body.alto-contraste { background-color: #000000 !important; color: #ffffff !important; }
+        body.alto-contraste .landing-header { background-color: #000000 !important; border-bottom: 2px solid #ffff00; }
+        body.alto-contraste .landing-nav a { color: #ffffff !important; }
+        body.alto-contraste .landing-nav a.active { color: #ffff00 !important; }
+        body.alto-contraste .info-card, 
+        body.alto-contraste .acc-panel-box,
+        body.alto-contraste .feature-box { background: #000000 !important; border: 2px solid #ffff00 !important; color: #ffffff !important; }
+        body.alto-contraste h1, body.alto-contraste h2, body.alto-contraste i { color: #ffff00 !important; }
+        body.alto-contraste .btn-entrar { border: 1px solid #ffff00 !important; color: #ffff00 !important; }
+        body.alto-contraste .btn-entrar:hover { background: #ffff00 !important; color: #000000 !important; }
+        body.alto-contraste .btn-criar,
+        body.alto-contraste .btn-principal { background: #ffff00 !important; color: #000000 !important; }
+        body.alto-contraste .btn-criar:hover,
+        body.alto-contraste .btn-principal:hover { background: #bfbf00 !important; }
 
-        .site-logo-svg {
-            height: 48px;
-            width: auto;
-            display: block;
-        }
+        /* HEADER (MENU DE NAVEGAÇÃO UNIFICADO) */
+        .site-logo-svg { height: 52px; width: auto; display: block; }
         .site-logo-svg .accent-blue { fill: #0055ff; }
         .site-logo-svg .accent-dark { fill: #051334; }
+        .landing-header { position: fixed; top: 0; left: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 24px 80px; z-index: 100; background-color: rgba(243, 246, 250, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid #e2e8f0; }
+        .landing-nav { display: flex; align-items: center; gap: 30px; }
+        .landing-nav a { color: #051334; text-decoration: none; font-size: 14px; font-weight: 700; letter-spacing: 0.5px; }
+        .landing-nav a:hover, .landing-nav a.active { color: #0055ff; }
 
-        .landing-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 24px 80px;
-            z-index: 100;
-            background-color: rgba(243, 246, 250, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid #e2e8f0;
+        /* BOTÕES DE AUTENTICAÇÃO */
+        .nav-auth { display: flex; align-items: center; gap: 15px; margin-left: 15px; }
+        .btn-entrar { color: #0055ff !important; border: 1px solid #0055ff; padding: 8px 18px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 700; }
+        .btn-entrar:hover { background-color: #0055ff; color: #ffffff !important; }
+        .btn-criar { background-color: #0055ff; color: #ffffff !important; padding: 9px 20px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 700; box-shadow: 0 4px 10px rgba(0, 85, 255, 0.2); }
+        .btn-criar:hover { background-color: #003ccb; transform: translateY(-1px); }
+
+        /* LAYOUT PRINCIPAL */
+        .main-container { max-width: 1100px; margin: 0 auto 80px auto; padding: 0 20px; animation: fadeInUp 0.6s ease-out; }
+        .info-card { background: #ffffff; border-radius: 24px; padding: 50px; border: 1px solid #e2e8f0; box-shadow: 0 12px 40px rgba(5, 19, 52, 0.04); text-align: center; }
+        
+        .hero-section { max-width: 800px; margin: 0 auto 40px auto; }
+        h1 { font-size: 42px; font-weight: 800; margin-bottom: 20px; color: #051334; line-height: 1.2; }
+        h1 span { color: #0055ff; }
+        .subtitle { font-size: 18px; color: #64748b; line-height: 1.6; margin-bottom: 30px; }
+        
+        .btn-principal { background-color: #0055ff; color: #ffffff; padding: 16px 36px; border-radius: 30px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 6px 20px rgba(0, 85, 255, 0.3); }
+        .btn-principal:hover { background-color: #003ccb; transform: translateY(-2px); }
+
+        .acc-panel-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px; display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 30px; justify-content: center; }
+        .acc-btn { background: #ffffff; border: 1px solid #cbd5e1; padding: 12px 24px; border-radius: 30px; font-weight: 600; font-size: 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; color: #334155; }
+        .acc-btn:hover { background: #0055ff; color: #ffffff; border-color: #0055ff; }
+
+        /* GRID DE RECURSOS */
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-top: 50px; text-align: left; }
+        .feature-box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 30px; border-radius: 20px; }
+        .feature-box i { font-size: 36px; color: #0055ff; margin-bottom: 20px; display: block; }
+        .feature-box h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; color: #051334; }
+        .feature-box p { font-size: 14px; color: #64748b; line-height: 1.6; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .landing-nav {
-            display: flex;
-            gap: 40px;
-        }
-
-        .landing-nav a {
-            color: #051334;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-
-        .landing-nav a:hover, .landing-nav a.active {
-            color: #0055ff;
-        }
-
-        .landing-actions-right {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-        }
-
-        .landing-actions-right button {
-            background: none;
-            border: none;
-            font-size: 13px;
-            font-weight: 700;
-            color: #051334;
-            cursor: pointer;
-            outline: none;
-        }
-
-        .landing-actions-right .btn-login {
-            background-color: #000000;
-            color: #ffffff;
-            padding: 12px 28px;
-            border-radius: 12px;
-        }
-
-        .hero-container {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            min-height: 600px;
-            background-image: linear-gradient(rgba(5, 19, 52, 0.4), rgba(5, 19, 52, 0.5)), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80');
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 0 20px;
-            text-align: center;
-        }
-
-        .hero-container h1 {
-            font-size: 56px;
-            color: #ffffff;
-            font-weight: 700;
-            margin-bottom: 16px;
-        }
-
-        .hero-container p {
-            font-size: 18px;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 40px;
-            max-width: 600px;
-        }
-
-        .search-wrapper {
-            background-color: #ffffff;
-            padding: 10px;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(5, 19, 52, 0.2);
-            display: flex;
-            align-items: center;
-            width: 100%;
-            max-width: 850px;
-            gap: 15px;
-        }
-
-        .search-box {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex: 1;
-            padding: 10px 15px;
-            border-right: 1px solid #e2e8f0;
-        }
-
-        .search-box:last-of-type { border-right: none; }
-        .search-box i { color: #0055ff; font-size: 18px; }
-        .search-box div { display: flex; flex-direction: column; align-items: flex-start; width: 100%; }
-        .search-box label { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 2px; }
-        .search-box input, .search-box select { border: none; outline: none; width: 100%; font-size: 14px; font-weight: 600; color: #051334; background: transparent; }
-
-        .btn-search {
-            background-color: #0055ff;
-            color: #ffffff;
-            border: none;
-            padding: 16px 35px;
-            border-radius: 14px;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        /* MODAL GLOBAL DE AUTENTICAÇÃO */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(5, 19, 52, 0.6);
-            backdrop-filter: blur(5px);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .auth-main-card {
-            background-color: #ffffff;
-            width: 90%;
-            max-width: 460px;
-            border-radius: 24px;
-            padding: 40px 35px;
-            box-shadow: 0 20px 50px rgba(5, 19, 52, 0.2);
-            border: 1px solid #e2e8f0;
-            position: relative;
-        }
-
-        .btn-close-auth {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
-            border: none;
-            font-size: 20px;
-            color: #64748b;
-            cursor: pointer;
-        }
-
-        .auth-title { font-size: 26px; font-weight: 700; color: #051334; margin-bottom: 8px; }
-        .auth-subtitle { font-size: 14px; color: #64748b; margin-bottom: 25px; }
-
-        .tipo-usuario-container {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 25px;
-        }
-
-        .btn-tipo {
-            flex: 1;
-            padding: 12px;
-            border: 2px solid #e2e8f0;
-            background: #ffffff;
-            border-radius: 12px;
-            font-size: 13px;
-            font-weight: 700;
-            color: #051334;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-transform: uppercase;
-        }
-
-        .btn-tipo.active {
-            border-color: #0055ff;
-            background-color: #0055ff;
-            color: #ffffff;
-        }
-
-        .auth-form { display: none; flex-direction: column; gap: 16px; }
-        .auth-form.active { display: flex; }
-
-        .input-group { display: flex; flex-direction: column; gap: 6px; }
-        .input-group label { font-size: 11px; font-weight: 700; color: #051334; text-transform: uppercase; }
-
-        .input-field {
-            width: 100%;
-            padding: 13px 16px;
-            background-color: #f1f5f9;
-            border: 1px solid transparent;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 500;
-            color: #051334;
-            outline: none;
-        }
-
-        .input-field:focus { border-color: #0055ff; background-color: #ffffff; }
-
-        .btn-auth-submit {
-            background-color: #0055ff;
-            color: #ffffff;
-            border: none;
-            padding: 15px;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 10px;
-            text-transform: uppercase;
-        }
-
-        .auth-footer-toggle {
-            text-align: center;
-            margin-top: 25px;
-            font-size: 13px;
-            color: #64748b;
-        }
-
-        .auth-footer-toggle span {
-            color: #0055ff;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: underline;
+        @media (max-width: 992px) {
+            .landing-header { padding: 20px 30px; flex-direction: column; gap: 15px; }
+            body { padding-top: 180px; }
         }
     </style>
 </head>
@@ -282,155 +92,66 @@
                 <rect class="accent-blue" x="20" y="20" width="16" height="40" rx="8" />
                 <rect class="accent-blue" x="42" y="28" width="16" height="32" rx="8" />
                 <rect class="accent-dark" x="64" y="12" width="16" height="48" rx="8" />
-                <text class="accent-dark" x="95" y="48" font-family="'Inter', sans-serif" font-size="22" font-weight="700" letter-spacing="-0.5">Viagens sem</text>
-                <text class="accent-blue" x="95" y="68" font-family="'Inter', sans-serif" font-size="22" font-weight="700" letter-spacing="-0.5">Barreiras</text>
+                <text class="accent-dark" x="95" y="48" font-size="22" font-weight="700">Viagens sem</text>
+                <text class="accent-blue" x="95" y="68" font-size="22" font-weight="700">Barreiras</text>
             </svg>
         </div>
         <nav class="landing-nav">
             <a href="index.html" class="active">INÍCIO</a>
             <a href="destinos.html">DESTINOS</a>
             <a href="acessibilidade.html">ACESSIBILIDADE</a>
-            <a href="#">SOBRE NÓS</a>
+            <a href="sobre.html">SOBRE NÓS</a>
+            
+            <div class="nav-auth">
+                <a href="login.html" class="btn-entrar">Entrar</a>
+                <a href="cadastro.html" class="btn-criar">Criar Conta</a>
+            </div>
         </nav>
-        <div class="landing-actions-right">
-            <button onclick="abrirCaixaAutenticacao('cadastro')">CRIAR CONTA</button>
-            <button onclick="abrirCaixaAutenticacao('login')" class="btn-login">ENTRAR</button>
-        </div>
     </header>
 
-    <section class="hero-container">
-        <h1>Turismo Acessível e Inclusivo</h1>
-        <p>Explore destinos validados e planeje sua próxima viagem com total autonomia.</p>
-        
-        <div class="search-wrapper">
-            <div class="search-box">
-                <i class="fa-solid fa-location-dot"></i>
-                <div>
-                    <label>Para onde vamos?</label>
-                    <input type="text" placeholder="Explore destinos acessíveis...">
-                </div>
-            </div>
-            
-            <div class="search-box">
-                <i class="fa-solid fa-wheelchair"></i>
-                <div>
-                    <label>Acessibilidade</label>
-                    <select>
-                        <option value="">Selecione a principal</option>
-                        <option value="motora">Acessibilidade Motora</option>
-                        <option value="visual">Acessibilidade Visual</option>
-                        <option value="auditiva">Acessibilidade Auditiva</option>
-                        <option value="mobilidade">Mobilidade Reduzida</option>
-                    </select>
-                </div>
-            </div>
-            <button class="btn-search" onclick="window.location.href='destinos.html'">Buscar</button>
+    <div class="main-container">
+        <div class="acc-panel-box">
+            <button class="acc-btn" onclick="mudarFonte(1)"><i class="fa-solid fa-font"></i> Aumentar Texto</button>
+            <button class="acc-btn" onclick="mudarFonte(-1)"><i class="fa-solid fa-font fa-sm"></i> Restaurar Fonte</button>
+            <button class="acc-btn" onclick="alternarContraste()"><i class="fa-solid fa-circle-half-stroke"></i> Modo Alto Contraste</button>
         </div>
-    </section>
 
-    <div class="modal-overlay" id="box-autenticacao">
-        <div class="auth-main-card">
-            <button class="btn-close-auth" onclick="fecharCaixaAutenticacao()"><i class="fa-solid fa-xmark"></i></button>
-            <h3 class="auth-title" id="m-title">Cadastre-se</h3>
-            <p class="auth-subtitle" id="m-subtitle">Escolha o tipo de perfil e preencha os dados abaixo.</p>
-
-            <div class="tipo-usuario-container">
-                <button type="button" class="btn-tipo active" id="tipo-viajante" onclick="setTipo('viajante')">Viajante</button>
-                <button type="button" class="btn-tipo" id="tipo-negocio" onclick="setTipo('negocio')">Negócio</button>
+        <div class="info-card">
+            <div class="hero-section">
+                <h1>O mundo sem barreiras para <span>você explorar</span></h1>
+                <p class="subtitle">Encontre e partilhe locais turísticos, hotéis e restaurantes detalhadamente mapeados com base em critérios reais de acessibilidade urbana.</p>
+                <a href="destinos.html" class="btn-principal">Explorar Destinos <i class="fa-solid fa-arrow-right"></i></a>
             </div>
 
-            <form id="f-cad-viajante" class="auth-form" onsubmit="event.preventDefault();">
-                <div class="input-group"><label>Nome Completo</label><input type="text" class="input-field" placeholder="Nome Completo" required></div>
-                <div class="input-group"><label>E-mail</label><input type="email" class="input-field" placeholder="seu@email.com" required></div>
-                <div class="input-group"><label>Telemóvel / Celular</label><input type="tel" class="input-field" placeholder="+351 900 000 000" required></div>
-                <div class="input-group"><label>Senha</label><input type="password" class="input-field" placeholder="Crie uma senha" required></div>
-                <div class="input-group"><label>Confirmar Senha</label><input type="password" class="input-field" placeholder="Repita a senha" required></div>
-                <button type="submit" class="btn-auth-submit">CADASTRAR VIAJANTE</button>
-            </form>
-
-            <form id="f-cad-negocio" class="auth-form" onsubmit="event.preventDefault();">
-                <div class="input-group"><label>Nome do Negócio / Empresa</label><input type="text" class="input-field" placeholder="Ex: Hotel Central" required></div>
-                <div class="input-group"><label>E-mail Corporativo</label><input type="email" class="input-field" placeholder="contato@empresa.com" required></div>
-                <div class="input-group"><label>Telefone Comercial</label><input type="tel" class="input-field" placeholder="+351 200 000 000" required></div>
-                <div class="input-group"><label>Senha</label><input type="password" class="input-field" placeholder="******" required></div>
-                <div class="input-group"><label>Confirmar Senha</label><input type="password" class="input-field" placeholder="******" required></div>
-                <button type="submit" class="btn-auth-submit" style="background-color: #051334;">CADASTRAR EMPRESA</button>
-            </form>
-
-            <form id="f-login-viajante" class="auth-form" onsubmit="event.preventDefault();">
-                <div class="input-group"><label>E-mail de Viajante</label><input type="email" class="input-field" placeholder="seu@email.com" required></div>
-                <div class="input-group"><label>Senha</label><input type="password" class="input-field" placeholder="******" required></div>
-                <button type="submit" class="btn-auth-submit">ENTRAR COMO VIAJANTE</button>
-            </form>
-
-            <form id="f-login-negocio" class="auth-form" onsubmit="event.preventDefault();">
-                <div class="input-group"><label>E-mail Corporativo</label><input type="email" class="input-field" placeholder="empresa@email.com" required></div>
-                <div class="input-group"><label>Senha</label><input type="password" class="input-field" placeholder="******" required></div>
-                <button type="submit" class="btn-auth-submit" style="background-color: #051334;">ACESSAR PAINEL</button>
-            </form>
-
-            <div class="auth-footer-toggle">
-                <p id="toggle-text">Já possui conta? <span onclick="alternarModo()">Acessar conta</span></p>
+            <div class="features-grid">
+                <div class="feature-box">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                    <h3>Mapeamento Verificado</h3>
+                    <p>Informações detalhadas sobre rampas, Braille, guias táteis e apoio cognitivo auditado pela comunidade.</p>
+                </div>
+                <div class="feature-box">
+                    <i class="fa-solid fa-layer-group"></i>
+                    <h3>Filtros Inteligentes</h3>
+                    <p>Adapte a sua pesquisa de acordo com a sua necessidade específica: motora, visual, auditiva ou neurodivergente.</p>
+                </div>
+                <div class="feature-box">
+                    <i class="fa-solid fa-comments"></i>
+                    <h3>Comunidade Ativa</h3>
+                    <p>Avalie os locais que visitou, envie fotos reais e ajude milhares de outros viajantes pelo mundo.</p>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        let modoAtual = 'cadastro'; 
-        let tipoAtual = 'viajante'; 
-
-        function abrirCaixaAutenticacao(modo) {
-            modoAtual = modo;
-            document.getElementById('box-autenticacao').classList.add('active');
-            atualizarForms();
+        function mudarFonte(direcao) {
+            if(direcao === 1) document.body.classList.add('fonte-grande');
+            else document.body.classList.remove('fonte-grande');
         }
 
-        function fecharCaixaAutenticacao() {
-            document.getElementById('box-autenticacao').classList.remove('active');
+        function alternarContraste() {
+            document.body.classList.toggle('alto-contraste');
         }
-
-        function setTipo(tipo) {
-            tipoAtual = tipo;
-            document.getElementById('tipo-viajante').classList.toggle('active', tipo === 'viajante');
-            document.getElementById('tipo-negocio').classList.toggle('active', tipo === 'negocio');
-            atualizarForms();
-        }
-
-        function alternarModo() {
-            modoAtual = (modoAtual === 'cadastro') ? 'login' : 'cadastro';
-            atualizarForms();
-        }
-
-        function atualizarForms() {
-            const cadViajante = document.getElementById('f-cad-viajante');
-            const cadNegocio = document.getElementById('f-cad-negocio');
-            const loginViajante = document.getElementById('f-login-viajante');
-            const loginNegocio = document.getElementById('f-login-negocio');
-
-            cadViajante.classList.remove('active');
-            cadNegocio.classList.remove('active');
-            loginViajante.classList.remove('active');
-            loginNegocio.classList.remove('active');
-
-            const title = document.getElementById('m-title');
-            const toggleText = document.getElementById('toggle-text');
-
-            if (modoAtual === 'cadastro') {
-                title.innerText = "Cadastre-se";
-                toggleText.innerHTML = 'Já possui conta? <span onclick="alternarModo()">Acessar conta</span>';
-                if (tipoAtual === 'viajante') cadViajante.classList.add('active');
-                else cadNegocio.classList.add('active');
-            } else {
-                title.innerText = "Acessar Conta";
-                toggleText.innerHTML = 'Não tem conta? <span onclick="alternarModo()">Criar agora</span>';
-                if (tipoAtual === 'viajante') loginViajante.classList.add('active');
-                else loginNegocio.classList.add('active');
-            }
-        }
-
-        document.getElementById('box-autenticacao').addEventListener('click', function(e) {
-            if (e.target === this) fecharCaixaAutenticacao();
-        });
     </script>
 </body>
 </html>
