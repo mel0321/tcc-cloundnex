@@ -3,247 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Viagens sem Barreiras - Detalhes do Destino</title>
+    <title>Viagens sem Barreiras - Detalhes</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* CONFIGURAÇÕES GERAIS E ANIMAÇÕES */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; transition: all 0.3s ease; }
-        body { background-color: #f3f6fa; color: #051334; padding-top: 140px; font-size: 16px; overflow-x: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; transition: all 0.2s ease; }
+        body { background-color: #f3f6fa; color: #051334; padding: 20px; }
+
+        .details-layout { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
         
-        /* ACESSIBILIDADE */
-        body.fonte-grande { font-size: 20px; }
-        body.fonte-grande h1 { font-size: 42px; }
-        body.fonte-grande h2 { font-size: 28px; }
-        body.fonte-grande p { font-size: 18px; }
-
-        body.alto-contraste { background-color: #000000 !important; color: #ffffff !important; }
-        body.alto-contraste .landing-header { background-color: #000000 !important; border-bottom: 2px solid #ffff00; }
-        body.alto-contraste .landing-nav a { color: #ffffff !important; }
-        body.alto-contraste .info-card, 
-        body.alto-contraste .acc-panel-box,
-        body.alto-contraste .review-box,
-        body.alto-contraste .score-item { background: #000000 !important; border: 2px solid #ffff00 !important; color: #ffffff !important; }
-        body.alto-contraste h1, body.alto-contraste h2, body.alto-contraste i, body.alto-contraste .score-number { color: #ffff00 !important; }
-        body.alto-contraste .btn-entrar { border: 1px solid #ffff00 !important; color: #ffff00 !important; }
-        body.alto-contraste .btn-entrar:hover { background: #ffff00 !important; color: #000000 !important; }
-        body.alto-contraste .btn-criar, body.alto-contraste .badge-tag, body.alto-contraste .btn-voltar { background: #ffff00 !important; color: #000000 !important; border-color: #ffff00 !important; }
-        body.alto-contraste .detail-main-img img { filter: grayscale(1) contrast(3); }
-
-        /* HEADER */
-        .site-logo-svg { height: 52px; width: auto; display: block; }
-        .site-logo-svg .accent-blue { fill: #0055ff; }
-        .site-logo-svg .accent-dark { fill: #051334; }
-        .landing-header { position: fixed; top: 0; left: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 24px 80px; z-index: 100; background-color: rgba(243, 246, 250, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid #e2e8f0; }
-        .landing-nav { display: flex; align-items: center; gap: 30px; }
-        .landing-nav a { color: #051334; text-decoration: none; font-size: 14px; font-weight: 700; letter-spacing: 0.5px; }
-        .landing-nav a:hover { color: #0055ff; }
-
-        .nav-auth { display: flex; align-items: center; gap: 15px; margin-left: 15px; }
-        .btn-entrar { color: #0055ff !important; border: 1px solid #0055ff; padding: 8px 18px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 700; }
-        .btn-entrar:hover { background-color: #0055ff; color: #ffffff !important; }
-        .btn-criar { background-color: #0055ff; color: #ffffff !important; padding: 9px 20px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 700; box-shadow: 0 4px 10px rgba(0, 85, 255, 0.2); }
-        .btn-criar:hover { background-color: #003ccb; transform: translateY(-1px); }
-
-        /* LAYOUT PRINCIPAL */
-        .main-container { max-width: 1100px; margin: 0 auto 80px auto; padding: 0 20px; animation: fadeInUp 0.6s ease-out; }
-        .info-card { background: #ffffff; border-radius: 24px; padding: 40px; border: 1px solid #e2e8f0; box-shadow: 0 12px 40px rgba(5, 19, 52, 0.04); }
+        .top-nav-actions { display: flex; justify-content: space-between; align-items: center; background: #ffffff; padding: 15px 25px; border-radius: 16px; border: 1px solid #e2e8f0; }
+        .btn-voltar-seta { display: flex; align-items: center; gap: 8px; color: #0055ff; text-decoration: none; font-weight: 700; font-size: 14px; }
         
-        .acc-panel-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px; display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 30px; }
-        .acc-btn { background: #ffffff; border: 1px solid #cbd5e1; padding: 12px 24px; border-radius: 30px; font-weight: 600; font-size: 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; color: #334155; }
-        .acc-btn:hover { background: #0055ff; color: #ffffff; border-color: #0055ff; }
+        .btn-fav-original { background: none; border: 1px solid #cbd5e1; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: 600; color: #475569; display: flex; align-items: center; gap: 6px; }
+        .btn-fav-original.ativo { background: #fee2e2; color: #ef4444; border-color: #fca5a5; }
 
-        .btn-voltar { display: inline-flex; align-items: center; gap: 8px; color: #64748b; text-decoration: none; font-weight: 600; font-size: 14px; margin-bottom: 25px; border: 1px solid #cbd5e1; padding: 8px 16px; border-radius: 20px; background: #ffffff; }
-        .btn-voltar:hover { color: #0055ff; border-color: #0055ff; }
+        .main-split { display: grid; grid-template-columns: 450px 1fr; gap: 20px; }
+        .info-card-left { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 24px; overflow: hidden; display: flex; flex-direction: column; }
+        .card-hero-img { width: 100%; height: 240px; object-fit: cover; background: #cbd5e1; }
+        
+        .card-body-padding { padding: 30px; flex: 1; }
+        .cat-tag-original { display: inline-block; background: #051334; color: #ffffff; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-bottom: 15px; }
+        .card-body-padding h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        .address-original { font-size: 13px; color: #64748b; margin-bottom: 20px; display: flex; align-items: center; gap: 6px; }
+        .desc-original { font-size: 14px; color: #475569; line-height: 1.6; }
 
-        .detail-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px; margin-bottom: 25px; }
-        h1 { font-size: 36px; font-weight: 700; color: #051334; }
-        .main-rating { display: flex; align-items: center; gap: 6px; color: #fbbf24; font-weight: 700; font-size: 18px; margin-top: 5px; }
-        .main-rating span { color: #64748b; font-size: 14px; font-weight: 500; }
+        .accessibility-bar-grey { background: #f1f5f9; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #e2e8f0; }
+        .acc-score-item { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: #334155; }
+        .acc-score-item i { color: #0055ff; font-size: 16px; }
 
-        /* GALERIA DE IMAGENS */
-        .detail-gallery { display: block; margin-bottom: 40px; border-radius: 16px; overflow: hidden; height: 380px; }
-        .detail-main-img { width: 100%; height: 100%; }
-        .detail-main-img img { width: 100%; height: 100%; object-fit: cover; }
+        .map-wrapper-right { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 24px; overflow: hidden; min-height: 450px; }
+        .map-wrapper-right iframe { width: 100%; height: 100%; border: none; }
 
-        .detail-content-layout { display: grid; grid-template-columns: 1.6fr 1fr; gap: 40px; }
-        h2 { font-size: 22px; font-weight: 700; color: #051334; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-        p { font-size: 15px; color: #475569; line-height: 1.7; margin-bottom: 25px; }
+        .comments-section-bottom { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 24px; padding: 40px; margin-top: 10px; }
+        .comments-section-bottom h2 { font-size: 20px; font-weight: 700; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
+        
+        .comentario-item { border-bottom: 1px solid #f1f5f9; padding: 20px 0; }
+        .comentario-meta { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; font-weight: 600; }
+        .comentario-texto { color: #475569; font-size: 14px; }
 
-        .checklist-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 30px; }
-        .checklist-item { display: flex; align-items: center; gap: 10px; font-size: 14px; color: #334155; font-weight: 500; }
-        .checklist-item i { color: #10b981; font-size: 16px; }
-
-        /* PAINEL GRÁFICO DE NOTAS POR CATEGORIA */
-        .score-panel { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 20px; padding: 25px; height: fit-content; }
-        .score-item { background: #ffffff; border: 1px solid #e2e8f0; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .score-info { display: flex; align-items: center; gap: 12px; font-weight: 600; color: #051334; font-size: 14px; }
-        .score-info i { color: #0055ff; font-size: 18px; width: 20px; text-align: center; }
-        .score-number { font-weight: 700; color: #0055ff; font-size: 16px; background: #e0eaff; padding: 4px 10px; border-radius: 8px; }
-
-        /* SEÇÃO DE AVALIAÇÕES */
-        .reviews-section { margin-top: 40px; border-top: 1px solid #e2e8f0; padding-top: 40px; }
-        .review-box { border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; margin-bottom: 15px; background: #ffffff; text-align: left; }
-        .review-user { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .user-info { display: flex; align-items: center; gap: 10px; font-weight: 700; color: #051334; font-size: 14px; }
-        .user-avatar { width: 35px; height: 35px; background: #cbd5e1; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #475569; }
-        .review-stars { color: #fbbf24; font-size: 12px; }
-        .review-text { font-size: 14px; color: #475569; line-height: 1.5; margin-bottom: 0; }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @media (max-width: 992px) {
-            .landing-header { padding: 20px 30px; flex-direction: column; gap: 15px; }
-            body { padding-top: 180px; }
-            .detail-content-layout { grid-template-columns: 1.6fr 1fr; }
-        }
+        .form-comentario { margin-top: 30px; background: #f8fafc; padding: 25px; border-radius: 16px; border: 1px solid #e2e8f0; }
+        .form-comentario textarea { width: 100%; height: 90px; padding: 15px; border-radius: 12px; border: 1px solid #cbd5e1; outline: none; resize: none; margin-bottom: 15px; }
+        .btn-enviar-comentario { background: #0055ff; color: #ffffff; border: none; padding: 12px 24px; border-radius: 30px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; }
     </style>
 </head>
 <body>
 
-    <header class="landing-header">
-        <div class="landing-brand-wrapper">
-            <svg class="site-logo-svg" viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg">
-                <rect class="accent-blue" x="20" y="20" width="16" height="40" rx="8" />
-                <rect class="accent-blue" x="42" y="28" width="16" height="32" rx="8" />
-                <rect class="accent-dark" x="64" y="12" width="16" height="48" rx="8" />
-                <text class="accent-dark" x="95" y="48" font-size="22" font-weight="700">Viagens sem</text>
-                <text class="accent-blue" x="95" y="68" font-size="22" font-weight="700">Barreiras</text>
-            </svg>
-        </div>
-        <nav class="landing-nav">
-            <a href="index.html">INÍCIO</a>
-            <a href="destinos.html">DESTINOS</a>
-            <a href="acessibilidade.html">ACESSIBILIDADE</a>
-            <a href="sobre.html">SOBRE NÓS</a>
-            <div class="nav-auth">
-                <a href="login.html" class="btn-entrar">Entrar</a>
-                <a href="cadastro.html" class="btn-criar">Criar Conta</a>
-            </div>
-        </nav>
-    </header>
-
-    <div class="main-container">
-        <div class="acc-panel-box">
-            <button class="acc-btn" onclick="mudarFonte(1)"><i class="fa-solid fa-font"></i> Aumentar Texto</button>
-            <button class="acc-btn" onclick="mudarFonte(-1)"><i class="fa-solid fa-font fa-sm"></i> Restaurar Fonte</button>
-            <button class="acc-btn" onclick="alternarContraste()"><i class="fa-solid fa-circle-half-stroke"></i> Modo Alto Contraste</button>
+    <div class="details-layout">
+        <div class="top-nav-actions">
+            <a href="destinos.html" class="btn-voltar-seta"><i class="fa-solid fa-arrow-left"></i> Voltar para Destinos</a>
+            <button id="btnFavOriginal" class="btn-fav-original" onclick="alternarFavorito()"><i class="fa-solid fa-bookmark"></i> Favoritar</button>
         </div>
 
-        <div class="info-card">
-            <a href="destinos.html" class="btn-voltar"><i class="fa-solid fa-arrow-left"></i> Voltar para os Destinos</a>
-
-            <div class="detail-header">
-                <div>
-                    <h1 id="detalhe-nome">Nome do Local</h1>
-                    <div class="main-rating">
-                        <i class="fa-solid fa-star"></i> <span id="detalhe-nota-geral">0.0</span> <span id="detalhe-qtd-aval">(0 avaliações)</span>
+        <div class="main-split">
+            <div class="info-card-left">
+                <img id="local-img" class="card-hero-img" src="">
+                <div class="card-body-padding">
+                    <span id="local-categoria" class="cat-tag-original">Categoria</span>
+                    <h1 id="local-nome">Nome do Estabelecimento</h1>
+                    <div id="local-endereco" class="address-original"><i class="fa-solid fa-location-dot"></i> Endereço</div>
+                    <p id="local-desc" class="desc-original">Descrição...</p>
+                </div>
+                <div class="accessibility-bar-grey">
+                    <div class="acc-score-item">
+                        <i class="fa-solid fa-wheelchair-move"></i>
+                        <span>Motora: <strong id="nota-motora">0.0</strong></span>
+                    </div>
+                    <div class="acc-score-item">
+                        <i class="fa-solid fa-person-walking-with-cane"></i>
+                        <span>Visual: <strong id="nota-visual">0.0</strong></span>
                     </div>
                 </div>
             </div>
 
-            <div class="detail-gallery">
-                <div class="detail-main-img">
-                    <img id="detalhe-img" src="" alt="Imagem do Local">
-                </div>
+            <div class="map-wrapper-right">
+                <iframe id="local-mapa" src="about:blank" allowfullscreen="" loading="lazy"></iframe>
             </div>
+        </div>
 
-            <div class="detail-content-layout">
-                <div>
-                    <h2><i class="fa-solid fa-circle-info" style="color: #0055ff;"></i> Sobre este local</h2>
-                    <p id="detalhe-desc">Descrição do local carregando...</p>
-                    
-                    <h2><i class="fa-solid fa-universal-access" style="color: #0055ff;"></i> Infraestrutura e Recursos</h2>
-                    <div class="checklist-grid">
-                        <div class="checklist-item"><i class="fa-solid fa-circle-check"></i> Rampa com inclinação regulamentada</div>
-                        <div class="checklist-item"><i class="fa-solid fa-circle-check"></i> Portas e corredores amplos</div>
-                        <div class="checklist-item"><i class="fa-solid fa-circle-check"></i> Banheiros com barras de apoio</div>
-                        <div class="checklist-item"><i class="fa-solid fa-circle-check"></i> Piso tátil de alerta</div>
-                        <div class="checklist-item"><i class="fa-solid fa-circle-check"></i> Atendimento prioritário treinado</div>
-                    </div>
-                </div>
+        <div class="comments-section-bottom">
+            <h2><i class="fa-solid fa-comments"></i> Comentários e Relatos</h2>
+            <div id="bloco-comentarios"></div>
 
-                <div class="score-panel">
-                    <h2>Métricas de Acessibilidade</h2>
-                    <div class="score-item">
-                        <div class="score-info"><i class="fa-solid fa-wheelchair"></i> Motora</div>
-                        <span class="score-number" id="nota-motora">0.0</span>
-                    </div>
-                    <div class="score-item">
-                        <div class="score-info"><i class="fa-solid fa-eye"></i> Visual</div>
-                        <span class="score-number" id="nota-visual">0.0</span>
-                    </div>
-                    <div class="score-item">
-                        <div class="score-info"><i class="fa-solid fa-ear-deaf"></i> Auditiva</div>
-                        <span class="score-number" id="nota-auditiva">0.0</span>
-                    </div>
-                </div>
+            <div class="form-comentario" id="caixa-criar-comentario" style="display:none;">
+                <textarea id="txt-comentario" placeholder="Escreva um relato sobre as condições reais de acessibilidade..."></textarea>
+                <button class="btn-enviar-comentario" onclick="adicionarComentario()"><i class="fa-solid fa-paper-plane"></i> Publicar Relato</button>
             </div>
-
-            <div class="reviews-section">
-                <h2><i class="fa-solid fa-comments" style="color: #0055ff;"></i> Avaliações dos usuários</h2>
-                
-                <div class="review-box">
-                    <div class="review-user">
-                        <div class="user-info">
-                            <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
-                            <span id="review-user-1">Usuário 1</span>
-                        </div>
-                        <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                    </div>
-                    <p class="review-text" id="review-text-1">Comentário 1</p>
-                </div>
-
-                <div class="review-box">
-                    <div class="review-user">
-                        <div class="user-info">
-                            <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
-                            <span id="review-user-2">Usuário 2</span>
-                        </div>
-                        <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                    </div>
-                    <p class="review-text" id="review-text-2">Comentário 2</p>
-                </div>
-            </div>
+            <p id="msg-login-comentario" style="color:#64748b; font-size:13px; margin-top:15px; font-style: italic;">⚠️ Conecte-se para poder enviar um relato.</p>
         </div>
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const dadosSalvos = localStorage.getItem('destinoSelecionado');
-            if (dadosSalvos) {
-                const dados = JSON.parse(dadosSalvos);
-                
-                // Aplica os textos e imagens correspondentes do card clicado
-                document.getElementById('detalhe-nome').innerText = dados.nome;
-                document.getElementById('detalhe-img').src = dados.img;
-                document.getElementById('detalhe-desc').innerText = dados.desc;
-                document.getElementById('detalhe-nota-geral').innerText = dados.notaGeral;
-                document.getElementById('detalhe-qtd-aval').innerText = `(${dados.avaliacoes} avaliações da comunidade)`;
-                
-                // Atualiza o painel gráfico de notas
-                document.getElementById('nota-motora').innerText = dados.nMotora;
-                document.getElementById('nota-visual').innerText = dados.nVisual;
-                document.getElementById('nota-auditiva').innerText = dados.nAuditiva;
+        let localAtual = null;
 
-                // Atualiza as avaliações exclusivas do local
-                document.getElementById('review-user-1').innerText = dados.u1;
-                document.getElementById('review-text-1').innerText = `"${dados.c1}"`;
-                document.getElementById('review-user-2').innerText = dados.u2;
-                document.getElementById('review-text-2').innerText = `"${dados.c2}"`;
+        document.addEventListener("DOMContentLoaded", function() {
+            localAtual = JSON.parse(localStorage.getItem('destinoSelecionado'));
+            if (!localAtual) { window.location.href = "destinos.html"; return; }
+
+            document.getElementById('local-img').src = localAtual.img;
+            document.getElementById('local-categoria').innerText = localAtual.categoria;
+            document.getElementById('local-nome').innerText = localAtual.nome;
+            document.getElementById('local-endereco').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${localAtual.endereco}`;
+            document.getElementById('local-desc').innerText = localAtual.desc || "Sem descrição cadastrada.";
+            document.getElementById('nota-motora').innerText = localAtual.nMotora || "4.5";
+            document.getElementById('nota-visual').innerText = localAtual.nVisual || "4.2";
+            
+            if(localAtual.mapa) document.getElementById('local-mapa').src = localAtual.mapa;
+
+            if (localStorage.getItem('tipoLogado')) {
+                document.getElementById('caixa-criar-comentario').style.display = "block";
+                document.getElementById('msg-login-comentario').style.display = "none";
             }
+            atualizarBotaoFavoritoUI();
+            renderizarComentarios();
         });
 
-        function mudarFonte(direcao) {
-            if(direcao === 1) document.body.classList.add('fonte-grande');
-            else document.body.classList.remove('fonte-grande');
+        function renderizarComentarios() {
+            const bloco = document.getElementById('bloco-comentarios'); bloco.innerHTML = "";
+            const lista = localAtual.comentariosLista || [];
+            if(lista.length === 0) { bloco.innerHTML = `<p style="color:#94a3b8; font-size:14px; font-style:italic;">Nenhum relato enviado ainda.</p>`; return; }
+            lista.forEach(c => {
+                bloco.innerHTML += `<div class="comentario-item"><div class="comentario-meta"><span>${c.autor}</span><span>${c.data}</span></div><p class="comentario-texto">${c.texto}</p></div>`;
+            });
         }
-        function alternarContraste() {
-            document.body.classList.toggle('alto-contraste');
+
+        function adicionarComentario() {
+            const texto = document.getElementById('txt-comentario').value.trim();
+            if(!texto) return;
+            const novo = { autor: "Membro da Comunidade", data: new Date().toLocaleDateString('pt-BR'), texto: texto };
+            let banco = JSON.parse(localStorage.getItem('bancoDestinos')) || [];
+            const idx = banco.findIndex(l => l.nome === localAtual.nome);
+            if(idx !== -1) {
+                if(!banco[idx].comentariosLista) banco[idx].comentariosLista = [];
+                banco[idx].comentariosLista.push(novo);
+                localStorage.setItem('bancoDestinos', JSON.stringify(banco));
+                localAtual = banco[idx];
+                localStorage.setItem('destinoSelecionado', JSON.stringify(localAtual));
+                document.getElementById('txt-comentario').value = "";
+                renderizarComentarios();
+            }
+        }
+
+        function alternarFavorito() {
+            let favs = JSON.parse(localStorage.getItem('meusFavoritos')) || [];
+            if(favs.some(f => f.nome === localAtual.nome)) { favs = favs.filter(f => f.nome !== localAtual.nome); } else { favs.push(localAtual); }
+            localStorage.setItem('meusFavoritos', JSON.stringify(favs));
+            atualizarBotaoFavoritoUI();
+        }
+
+        function actualizarBotaoFavoritoUI() {
+            const favs = JSON.parse(localStorage.getItem('meusFavoritos')) || [];
+            const btn = document.getElementById('btnFavOriginal');
+            if(favs.some(f => f.nome === localAtual.nome)) { btn.classList.add('ativo'); btn.innerHTML = `<i class="fa-solid fa-bookmark"></i> Favoritado`; } else { btn.classList.remove('ativo'); btn.innerHTML = `<i class="fa-solid fa-bookmark"></i> Favoritar`; }
         }
     </script>
 </body>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viagens sem Barreiras - Meus Favoritos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; transition: all 0.3s ease; }
+        body { background-color: #f3f6fa; color: #051334; padding-top: 140px; }
+        
+        .landing-header { position: fixed; top: 0; left: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 24px 80px; z-index: 100; background-color: rgba(243, 246, 250, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid #e2e8f0; }
+        .site-logo-svg { height: 52px; width: auto; }
+        .site-logo-svg .accent-blue { fill: #0055ff; }
+        .site-logo-svg .accent-dark { fill: #051334; }
+
+        .main-container { max-width: 1100px; margin: 0 auto 80px auto; padding: 0 20px; }
+        .info-card { background: #ffffff; border-radius: 24px; padding: 50px; border: 1px solid #e2e8f0; box-shadow: 0 12px 40px rgba(5, 19, 52, 0.04); }
+        
+        h1 { font-size: 38px; font-weight: 700; margin-bottom: 20px; color: #051334; }
+        .btn-voltar { display: inline-flex; align-items: center; gap: 8px; color: #0055ff; text-decoration: none; font-weight: 600; font-size: 14px; margin-bottom: 25px; }
+
+        .destinos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 3fr)); gap: 30px; margin-top: 30px; }
+        .destino-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; position: relative; }
+        .destino-img-container { height: 210px; overflow: hidden; }
+        .destino-img-container img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .card-body { padding: 25px; text-align: left; }
+        .card-title { font-size: 20px; font-weight: 700; color: #051334; margin-bottom: 15px; }
+        .btn-remover { background: #fff0f0; border: 1px solid #ef4444; color: #ef4444; padding: 8px 16px; border-radius: 20px; font-weight: 600; cursor: pointer; font-size: 13px; width: 100%; text-align: center; }
+        .btn-remover:hover { background: #ef4444; color: #ffffff; }
+    </style>
+</head>
+<body>
+
+    <header class="landing-header">
+        <div class="landing-brand-wrapper">
+            <svg class="site-logo-svg" viewBox="0 0 320 80">
+                <rect class="accent-blue" x="20" y="20" width="16" height="40" rx="8" />
+                <rect class="accent-blue" x="42" y="28" width="16" height="32" rx="8" />
+                <rect class="accent-dark" x="64" y="12" width="16" height="48" rx="8" />
+                <text class="accent-dark" x="95" y="48" font-size="22" font-weight="700">Viagens sem</text>
+                <text class="accent-blue" x="95" y="68" font-size="22" font-weight="700">Barreiras</text>
+            </svg>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="info-card">
+            <a href="destinos.html" class="btn-voltar"><i class="fa-solid fa-arrow-left"></i> Voltar para os Destinos</a>
+            <h1>Meus Destinos Favoritados ❤️</h1>
+            <p style="color: #64748b;">Abaixo estão salvos todos os locais que você marcou com um coração.</p>
+
+            <div class="destinos-grid" id="container-favoritos">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            carregarFavoritos();
+        });
+
+        function carregarFavoritos() {
+            const container = document.getElementById('container-favoritos');
+            const favoritos = JSON.parse(localStorage.getItem('listaFavoritos') || "[]");
+
+            if(favoritos.length === 0) {
+                container.innerHTML = `<p style="color:#64748b; grid-column: 1/-1; text-align:center; padding: 40px 0;">Você ainda não possui nenhum destino salvo nos favoritos.</p>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            favoritos.forEach(f => {
+                container.innerHTML += `
+                    <div class="destino-card" id="card-${f.nome}">
+                        <div class="destino-img-container">
+                            <img src="${f.img}" alt="${f.nome}">
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">${f.nome}</div>
+                            <button class="btn-remover" onclick="removerFavorito('${f.nome}')"><i class="fa-solid fa-trash"></i> Remover dos Favoritos</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function removerFavorito(nome) {
+            let favoritos = JSON.parse(localStorage.getItem('listaFavoritos') || "[]");
+            favoritos = favoritos.filter(f => f.nome !== nome);
+            localStorage.setItem('listaFavoritos', JSON.stringify(favoritos));
+            carregarFavoritos();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Estabelecimento</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; transition: all 0.2s ease; }
+        body { background-color: #f3f6fa; color: #051334; padding-top: 120px; padding-bottom: 40px; }
+
+        /* HEADER GLOBAL */
+        .landing-header { position: fixed; top: 0; left: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 24px 80px; z-index: 100; background-color: rgba(243, 246, 250, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid #e2e8f0; }
+        .site-logo-svg { height: 52px; width: auto; }
+        .site-logo-svg .accent-blue { fill: #0055ff; }
+        .site-logo-svg .accent-dark { fill: #051334; }
+        .landing-nav { display: flex; align-items: center; gap: 30px; }
+        .landing-nav a { color: #051334; text-decoration: none; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+
+        /* DROPDOWN AVATAR */
+        .nav-auth { display: flex; align-items: center; position: relative; }
+        .user-avatar-btn { width: 42px; height: 42px; color: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; cursor: pointer; font-size: 16px; user-select: none; }
+        .avatar-empresa { background: #d97706; }
+        
+        .dropdown-menu { display: none; position: absolute; top: 50px; right: 0; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; width: 190px; box-shadow: 0 10px 25px rgba(5,19,52,0.1); z-index: 1000; overflow: hidden; }
+        .dropdown-menu a { display: block; padding: 12px 16px; text-decoration: none; color: #051334; font-size: 14px; font-weight: 600; text-align: left; }
+        .dropdown-menu a:hover { background: #f8fafc; color: #0055ff; }
+        .dropdown-menu .divider { border-top: 1px solid #e2e8f0; margin: 4px 0; }
+
+        /* LAYOUT DUAS COLUNAS */
+        .dashboard-layout { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 350px 1fr; gap: 20px; padding: 0 20px; }
+
+        .sidebar-box { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 24px; padding: 30px 20px; height: fit-content; }
+        .sidebar-box h2 { font-size: 18px; margin-bottom: 25px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        .sidebar-menu { display: flex; flex-direction: column; gap: 10px; }
+        .sidebar-menu a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #475569; text-decoration: none; font-size: 14px; font-weight: 600; }
+        .sidebar-menu a.active { background: #e0eaff; color: #0055ff; }
+
+        .main-form-box { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 24px; padding: 40px; }
+        .main-form-box h1 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+        .main-form-box p { color: #64748b; font-size: 14px; margin-bottom: 35px; }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 12px; font-weight: 700; color: #475569; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid #cbd5e1; outline: none; font-size: 14px; }
+        .grid-inputs-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+        /* CHECKBOXES */
+        .accessibility-checkbox-section { margin: 25px 0; }
+        .accessibility-checkbox-section h3 { font-size: 12px; font-weight: 700; color: #475569; text-transform: uppercase; margin-bottom: 15px; }
+        .checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .checkbox-item { display: flex; align-items: center; gap: 10px; font-size: 14px; color: #334155; font-weight: 500; cursor: pointer; }
+        .checkbox-item input { width: 18px; height: 18px; accent-color: #0055ff; cursor: pointer; }
+
+        .btn-salvar-original { background: #0055ff; color: #ffffff; border: none; padding: 12px 28px; border-radius: 20px; font-weight: 700; font-size: 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+    </style>
+</head>
+<body>
+
+    <header class="landing-header">
+        <div class="landing-brand-wrapper">
+            <svg class="site-logo-svg" viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg">
+                <rect class="accent-blue" x="20" y="20" width="16" height="40" rx="8" />
+                <rect class="accent-dark" x="64" y="12" width="16" height="48" rx="8" />
+                <text class="accent-dark" x="95" y="48" font-size="22" font-weight="700">Viagens sem</text>
+                <text class="accent-blue" x="95" y="68" font-size="22" font-weight="700">Barreiras</text>
+            </svg>
+        </div>
+        <nav class="landing-nav">
+            <a href="index.html"><i class="fa-solid fa-house"></i> INÍCIO</a>
+            <a href="destinos.html"><i class="fa-solid fa-compass"></i> DESTINOS</a>
+            <a href="acessibilidade.html"><i class="fa-solid fa-universal-access"></i> ACESSIBILIDADE</a>
+            
+            <div class="nav-auth">
+                <div id="user-avatar" class="user-avatar-btn avatar-empresa" onclick="toggleMenuDropdown()">E</div>
+                <div class="dropdown-menu" id="dropdown-perfil-empresa">
+                    <a href="#" class="active"><i class="fa-solid fa-sliders"></i> Painel Empresa</a>
+                    <div class="divider"></div>
+                    <a href="#" onclick="removerLoginGlobal(); return false;" style="color: #ef4444;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="dashboard-layout">
+        <aside class="sidebar-box">
+            <h2><i class="fa-solid fa-chart-simple"></i> Painel da Empresa</h2>
+            <div class="sidebar-menu">
+                <a href="#" class="active"><i class="fa-solid fa-square-plus"></i> Novo Cadastro</a>
+                <a href="destinos.html"><i class="fa-solid fa-arrow-left"></i> Voltar para o Site</a>
+            </div>
+        </aside>
+
+        <main class="main-form-box">
+            <h1>Cadastrar Estabelecimento</h1>
+            <p>Preencha os dados do local público ou privado para disponibilizar no catálogo acessível.</p>
+
+            <form id="form-cadastro-original" onsubmit="salvarNovoLocalNoBanco(event)">
+                <div class="form-group">
+                    <label for="nome">Nome do Estabelecimento</label>
+                    <input type="text" id="nome" placeholder="Ex: Restaurante Central Sabor" required>
+                </div>
+
+                <div class="grid-inputs-2col">
+                    <div class="form-group">
+                        <label for="categoria">Categoria</label>
+                        <select id="categoria" required>
+                            <option value="Restaurante">Restaurante</option>
+                            <option value="Hospedagem">Hospedagem</option>
+                            <option value="Ponto Turístico">Ponto Turístico</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="img">URL da Imagem de Capa</label>
+                        <input type="url" id="img" value="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="endereco">Endereço Completo</label>
+                    <input type="text" id="endereco" placeholder="Ex: Rua das Flores, Centro 123 - SP" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="desc">Descrição / Detalhes</label>
+                    <textarea id="desc" rows="4" placeholder="Fale sobre o ambiente e as adaptações..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="mapaLink">Link de Incorporação do Google Maps (iframe/src)</label>
+                    <input type="text" id="mapaLink" placeholder="Cole a URL do iframe aqui...">
+                </div>
+
+                <div class="accessibility-checkbox-section">
+                    <h3>Recursos de Acessibilidade Disponíveis</h3>
+                    <div class="checkbox-grid">
+                        <label class="checkbox-item"><input type="checkbox" id="rec-rampa"> Rampa de Acesso / Entrada Plana</label>
+                        <label class="checkbox-item"><input type="checkbox" id="rec-banheiro"> Banheiro Adaptado</label>
+                        <label class="checkbox-item"><input type="checkbox" id="rec-vagas"> Vagas Reservadas</label>
+                        <label class="checkbox-item"><input type="checkbox" id="rec-piso"> Piso Podotátil</label>
+                        <label class="checkbox-item"><input type="checkbox" id="rec-braille"> Sinalização em Braille</label>
+                        <label class="checkbox-item"><input type="checkbox" id="rec-libras"> Atendimento em Libras</label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-salvar-original"><i class="fa-solid fa-check"></i> Salvar e Publicar</button>
+            </form>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if(localStorage.getItem('tipoLogado') !== 'empresa') window.location.href = "destinos.html";
+            window.addEventListener('click', function(e) {
+                const dropdown = document.getElementById('dropdown-perfil-empresa');
+                if (dropdown && !dropdown.contains(e.target) && !document.getElementById('user-avatar').contains(e.target)) dropdown.style.display = 'none';
+            });
+        });
+        function toggleMenuDropdown() { const d = document.getElementById('dropdown-perfil-empresa'); d.style.display = d.style.display === 'block' ? 'none' : 'block'; }
+        function removerLoginGlobal() { localStorage.removeItem('tipoLogado'); window.location.href = "destinos.html"; }
+
+        function salvarNovoLocalNoBanco(event) {
+            event.preventDefault();
+            const nome = document.getElementById('nome').value.trim();
+            const category = document.getElementById('categoria').value;
+            const img = document.getElementById('img').value.trim();
+            const endereco = document.getElementById('endereco').value.trim();
+            const desc = document.getElementById('desc').value.trim();
+            let mapaLink = document.getElementById('mapaLink').value.trim();
+            
+            if(!mapaLink) mapaLink = "https://maps.google.com/maps?q="+encodeURIComponent(endereco)+"&t=&z=13&ie=UTF-8&iwloc=&output=embed";
+
+            const rampa = document.getElementById('rec-rampa').checked;
+            const banheiro = document.getElementById('rec-banheiro').checked;
+            const piso = document.getElementById('rec-piso').checked;
+            const braille = document.getElementById('rec-braille').checked;
+
+            const novo = {
+                nome: nome, categoria: category, endereco: endereco, desc: desc, img: img, mapa: mapaLink,
+                notaGeral: "4.5",
+                nMotora: rampa || banheiro ? "4.8" : "3.5",
+                nVisual: piso || braille ? "4.5" : "3.2",
+                comentariosLista: []
+            };
+
+            let banco = JSON.parse(localStorage.getItem('bancoDestinos')) || [];
+            banco.push(novo);
+            localStorage.setItem('bancoDestinos', JSON.stringify(banco));
+            alert("Sucesso!");
+            window.location.href = "destinos.html";
+        }
+    </script>
+</body>
+</html>

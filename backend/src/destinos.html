@@ -3,105 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Viagens sem Barreiras - Destinos</title>
+    <title>Viagens sem Barreiras - Encontre seu Destino</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* CONFIGURAÇÕES GERAIS E ANIMAÇÕES */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; transition: all 0.3s ease; }
-        body { background-color: #f3f6fa; color: #051334; padding-top: 140px; font-size: 16px; overflow-x: hidden; }
-        
-        /* ACESSIBILIDADE: TAMANHO DE FONTE */
-        body.fonte-grande { font-size: 20px; }
-        body.fonte-grande h1 { font-size: 42px; }
-        body.fonte-grande .card-title { font-size: 22px; }
-        body.fonte-grande p { font-size: 16px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; transition: all 0.2s ease; }
+        body { background-color: #f3f6fa; color: #051334; padding-top: 120px; }
 
-        /* ACESSIBILIDADE: ALTO CONTRASTE */
-        body.alto-contraste { background-color: #000000 !important; color: #ffffff !important; }
-        body.alto-contraste .landing-header { background-color: #000000 !important; border-bottom: 2px solid #ffff00; }
-        body.alto-contraste .landing-nav a { color: #ffffff !important; }
-        body.alto-contraste .landing-nav a.active { color: #ffff00 !important; }
-        body.alto-contraste .info-card, 
-        body.alto-contraste .acc-panel-box,
-        body.alto-contraste .destino-card,
-        body.alto-contraste .search-bar { background: #000000 !important; border: 2px solid #ffff00 !important; color: #ffffff !important; }
-        body.alto-contraste h1, body.alto-contraste i, body.alto-contraste .card-title { color: #ffff00 !important; }
-        body.alto-contraste .search-bar input { background: transparent !important; color: #ffffff !important; }
-        body.alto-contraste .destino-img-container img { filter: grayscale(1) contrast(3); }
-        body.alto-contraste .btn-entrar { border: 1px solid #ffff00 !important; color: #ffff00 !important; }
-        body.alto-contraste .btn-entrar:hover { background: #ffff00 !important; color: #000000 !important; }
-        body.alto-contraste .btn-criar,
-        body.alto-contraste .badge-tag { background: #ffff00 !important; color: #000000 !important; }
-        body.alto-contraste .btn-criar:hover { background: #bfbf00 !important; }
-        body.alto-contraste .btn-explorar-card { background: #ffff00 !important; color: #000000 !important; border-color: #ffff00 !important; }
-
-        /* HEADER */
-        .site-logo-svg { height: 52px; width: auto; display: block; }
+        /* HEADER GLOBAL */
+        .landing-header { position: fixed; top: 0; left: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 24px 80px; z-index: 100; background-color: rgba(243, 246, 250, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid #e2e8f0; }
+        .site-logo-svg { height: 52px; width: auto; }
         .site-logo-svg .accent-blue { fill: #0055ff; }
         .site-logo-svg .accent-dark { fill: #051334; }
-        .landing-header { position: fixed; top: 0; left: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 24px 80px; z-index: 100; background-color: rgba(243, 246, 250, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid #e2e8f0; }
         .landing-nav { display: flex; align-items: center; gap: 30px; }
-        .landing-nav a { color: #051334; text-decoration: none; font-size: 14px; font-weight: 700; letter-spacing: 0.5px; }
-        .landing-nav a:hover, .landing-nav a.active { color: #0055ff; }
+        .landing-nav a { color: #051334; text-decoration: none; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+        .landing-nav a.active { color: #0055ff; }
 
-        .nav-auth { display: flex; align-items: center; gap: 15px; margin-left: 15px; }
-        .btn-entrar { color: #0055ff !important; border: 1px solid #0055ff; padding: 8px 18px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 700; }
-        .btn-entrar:hover { background-color: #0055ff; color: #ffffff !important; }
-        .btn-criar { background-color: #0055ff; color: #ffffff !important; padding: 9px 20px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 700; box-shadow: 0 4px 10px rgba(0, 85, 255, 0.2); }
-        .btn-criar:hover { background-color: #003ccb; transform: translateY(-1px); }
-
-        /* LAYOUT PRINCIPAL */
-        .main-container { max-width: 1100px; margin: 0 auto 80px auto; padding: 0 20px; animation: fadeInUp 0.6s ease-out; }
-        .info-card { background: #ffffff; border-radius: 24px; padding: 50px; border: 1px solid #e2e8f0; box-shadow: 0 12px 40px rgba(5, 19, 52, 0.04); }
+        /* AUTENTICAÇÃO E DROPDOWN */
+        .nav-auth { display: flex; align-items: center; gap: 15px; margin-left: 15px; position: relative; }
+        .btn-entrar { color: #0055ff !important; border: 1px solid #0055ff; padding: 8px 18px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 700; cursor: pointer; }
+        .btn-criar { background-color: #0055ff; color: #ffffff !important; padding: 9px 20px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 700; cursor: pointer; }
         
-        h1 { font-size: 38px; font-weight: 700; margin-bottom: 20px; color: #051334; }
-        .subtitle { font-size: 18px; color: #64748b; line-height: 1.6; margin-bottom: 40px; }
-
-        .acc-panel-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px; display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 30px; }
-        .acc-btn { background: #ffffff; border: 1px solid #cbd5e1; padding: 12px 24px; border-radius: 30px; font-weight: 600; font-size: 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; color: #334155; }
-        .acc-btn:hover { background: #0055ff; color: #ffffff; border-color: #0055ff; }
-
-        .search-bar { background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px 25px; border-radius: 16px; display: flex; align-items: center; gap: 15px; margin-bottom: 40px; }
-        .search-bar i { color: #64748b; font-size: 20px; }
-        .search-bar input { border: none; background: transparent; width: 100%; font-size: 16px; outline: none; color: #051334; }
-
-        /* DESIGN DOS CARDS */
-        .destinos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-        .destino-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.02); display: flex; flex-direction: column; position: relative; }
-        .destino-card:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(5,19,52,0.06); }
+        .user-avatar-btn { width: 42px; height: 42px; color: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; cursor: pointer; font-size: 16px; user-select: none; }
+        .avatar-empresa { background: #d97706; box-shadow: 0 4px 10px rgba(217, 119, 6, 0.2); }
+        .avatar-usuario { background: #0055ff; box-shadow: 0 4px 10px rgba(0, 85, 255, 0.2); }
         
-        .destino-img-container { height: 210px; overflow: hidden; position: relative; background-color: #e2e8f0; }
-        .destino-img-container img { width: 100%; height: 100%; object-fit: cover; }
-        
-        .nota-badge { position: absolute; top: 15px; right: 15px; background: rgba(5, 19, 52, 0.85); backdrop-filter: blur(4px); color: #ffffff; padding: 6px 12px; border-radius: 12px; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 5px; z-index: 2; }
-        .nota-badge i { color: #fbbf24; font-size: 12px; }
+        .dropdown-menu { display: none; position: absolute; top: 50px; right: 0; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; width: 190px; box-shadow: 0 10px 25px rgba(5,19,52,0.1); z-index: 1000; overflow: hidden; }
+        .dropdown-menu a { display: block; padding: 12px 16px; text-decoration: none; color: #051334; font-size: 14px; font-weight: 600; text-align: left; }
+        .dropdown-menu a:hover { background: #f8fafc; color: #0055ff; }
+        .dropdown-menu .divider { border-top: 1px solid #e2e8f0; margin: 4px 0; }
 
-        .card-body { padding: 25px; display: flex; flex-direction: column; flex-grow: 1; text-align: left; }
-        .card-title { font-size: 20px; font-weight: 700; color: #051334; margin-bottom: 6px; }
-        
-        .card-rating { display: flex; align-items: center; gap: 4px; margin-bottom: 15px; color: #fbbf24; font-size: 14px; }
-        .rating-count { color: #64748b; font-size: 12px; font-weight: 500; margin-left: 5px; }
+        /* MODAL DE LOGIN */
+        .modal-login-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 19, 52, 0.6); backdrop-filter: blur(4px); z-index: 200; align-items: center; justify-content: center; }
+        .modal-login-card { background: #ffffff; padding: 35px; border-radius: 24px; max-width: 420px; width: 90%; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
 
-        .card-body p { font-size: 14px; color: #475569; line-height: 1.6; margin-bottom: 20px; flex-grow: 1; }
-        
-        .card-footer-layout { display: flex; justify-content: space-between; align-items: center; margin-top: auto; border-top: 1px solid #f1f5f9; padding-top: 15px; }
-        .badges-wrapper { display: flex; gap: 6px; flex-wrap: wrap; max-width: 60%; }
-        .badge-tag { background: #e0eaff; color: #0055ff; font-size: 11px; font-weight: 700; padding: 5px 10px; border-radius: 20px; display: inline-flex; align-items: center; gap: 4px; }
+        /* BUSCA E FILTROS */
+        .search-container { max-width: 1200px; margin: 0 auto 30px auto; padding: 0 20px; }
+        .search-box { background: #ffffff; padding: 20px; border-radius: 16px; border: 1px solid #e2e8f0; display: flex; gap: 15px; align-items: center; }
+        .search-box i { color: #94a3b8; font-size: 18px; margin-left: 10px; }
+        .search-box input { flex: 1; padding: 12px 20px; border-radius: 30px; border: 1px solid #cbd5e1; outline: none; font-size: 15px; }
+        .filter-buttons { display: flex; gap: 10px; margin-top: 15px; }
+        .btn-filter { background: #ffffff; border: 1px solid #cbd5e1; padding: 8px 18px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; color: #475569; display: flex; align-items: center; gap: 6px; }
+        .btn-filter.active { background: #0055ff; color: #ffffff; border-color: #0055ff; }
 
-        .btn-explorar-card { background: transparent; border: 1px solid #0055ff; color: #0055ff; padding: 8px 16px; border-radius: 30px; font-size: 13px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
-        .btn-explorar-card:hover { background: #0055ff; color: #ffffff; }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @media (max-width: 992px) {
-            .landing-header { padding: 20px 30px; flex-direction: column; gap: 15px; }
-            body { padding-top: 180px; }
-        }
+        /* LAYOUT DOS CARDS */
+        .destinations-grid { max-width: 1200px; margin: 0 auto 60px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 25px; }
+        .dest-card { background: #ffffff; border-radius: 20px; border: 1px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column; }
+        .dest-img-wrapper { position: relative; height: 220px; background: #e2e8f0; }
+        .dest-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+        .category-tag { position: absolute; top: 15px; left: 15px; background: rgba(5, 19, 52, 0.85); color: #ffffff; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+        .dest-content { padding: 25px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .dest-info h3 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+        .dest-info .address { font-size: 13px; color: #64748b; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+        .dest-info .desc { font-size: 14px; color: #475569; line-height: 1.5; margin-bottom: 20px; }
+        .card-acc-badges { display: flex; gap: 8px; margin-bottom: 20px; }
+        .acc-badge { background: #f1f5f9; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; color: #334155; display: flex; align-items: center; gap: 6px; }
+        .acc-badge i { color: #0055ff; }
+        .dest-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 15px; }
+        .rating-box { display: flex; align-items: center; gap: 5px; font-weight: 700; color: #fbbf24; }
+        .btn-ver-detalhes { background: #e0eaff; color: #0055ff; border: none; padding: 8px 16px; border-radius: 20px; font-weight: 700; font-size: 13px; cursor: pointer; text-decoration: none; display: flex; align-items: center; gap: 6px; }
+        .btn-ver-detalhes:hover { background: #0055ff; color: #ffffff; }
     </style>
 </head>
 <body>
@@ -110,189 +72,236 @@
         <div class="landing-brand-wrapper">
             <svg class="site-logo-svg" viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg">
                 <rect class="accent-blue" x="20" y="20" width="16" height="40" rx="8" />
-                <rect class="accent-blue" x="42" y="28" width="16" height="32" rx="8" />
                 <rect class="accent-dark" x="64" y="12" width="16" height="48" rx="8" />
                 <text class="accent-dark" x="95" y="48" font-size="22" font-weight="700">Viagens sem</text>
                 <text class="accent-blue" x="95" y="68" font-size="22" font-weight="700">Barreiras</text>
             </svg>
         </div>
         <nav class="landing-nav">
-            <a href="index.html">INÍCIO</a>
-            <a href="destinos.html" class="active">DESTINOS</a>
-            <a href="acessibilidade.html">ACESSIBILIDADE</a>
-            <a href="sobre.html">SOBRE NÓS</a>
+            <a href="index.html"><i class="fa-solid fa-house"></i> INÍCIO</a>
+            <a href="destinos.html" class="active"><i class="fa-solid fa-compass"></i> DESTINOS</a>
+            <a href="acessibilidade.html"><i class="fa-solid fa-universal-access"></i> ACESSIBILIDADE</a>
+            
             <div class="nav-auth">
-                <a href="login.html" class="btn-entrar">Entrar</a>
-                <a href="cadastro.html" class="btn-criar">Criar Conta</a>
+                <div id="area-deslogado" style="display: flex; gap: 15px;">
+                    <a href="#" onclick="abrirModalLogin(); return false;" class="btn-entrar">Entrar</a>
+                    <a href="#" onclick="abrirModalLogin(); return false;" class="btn-criar">Criar Conta</a>
+                </div>
+                
+                <div id="area-logada" style="display: none;">
+                    <div id="user-avatar" class="user-avatar-btn" onclick="toggleMenuDropdown()">?</div>
+                    <div class="dropdown-menu" id="dropdown-perfil-empresa">
+                        <a href="dashboard-negocio.html" id="link-painel-empresa"><i class="fa-solid fa-sliders"></i> Painel Empresa</a>
+                        <a href="favoritos.html"><i class="fa-solid fa-bookmark"></i> Meus Favoritos</a>
+                        <div class="divider"></div>
+                        <a href="#" onclick="removerLoginGlobal(); return false;" style="color: #ef4444;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair</a>
+                    </div>
+                </div>
             </div>
         </nav>
     </header>
 
-    <div class="main-container">
-        <div class="acc-panel-box">
-            <button class="acc-btn" onclick="mudarFonte(1)"><i class="fa-solid fa-font"></i> Aumentar Texto</button>
-            <button class="acc-btn" onclick="mudarFonte(-1)"><i class="fa-solid fa-font fa-sm"></i> Restaurar Fonte</button>
-            <button class="acc-btn" onclick="alternarContraste()"><i class="fa-solid fa-circle-half-stroke"></i> Modo Alto Contraste</button>
-        </div>
-
-        <div class="info-card">
-            <h1>Explorar Destinos</h1>
-            <p class="subtitle">Encontre locais com infraestrutura adequada para acolher todos com conforto, autonomia e segurança.</p>
-            
-            <div class="search-bar">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="Pesquise por cidade, hotel, parque ou ponto turístico...">
+    <div class="modal-login-overlay" id="modalLogin">
+        <div class="modal-login-card">
+            <div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">
+                <button id="tab-entrar" style="flex: 1; background: none; border: none; font-weight: 700; font-size: 16px; color: #0055ff; cursor: pointer;" onclick="mudarAbaModal('entrar')">Entrar</button>
+                <button id="tab-cadastrar" style="flex: 1; background: none; border: none; font-weight: 700; font-size: 16px; color: #64748b; cursor: pointer;" onclick="mudarAbaModal('cadastrar')">Criar Conta</button>
             </div>
-
-            <div class="destinos-grid">
-                <div class="destino-card">
-                    <div class="destino-img-container">
-                        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=80" alt="Hotel luxuoso acessível">
-                        <span class="nota-badge"><i class="fa-solid fa-star"></i> 4.8</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-title">Hotel Paraíso Acessível</div>
-                        <div class="card-rating">
-                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                            <span class="rating-count">(42 avaliações)</span>
-                        </div>
-                        <p>Quartos totalmente adaptados com barras de apoio, rampas suaves na entrada e piscina com elevador hidráulico.</p>
-                        <div class="card-footer-layout">
-                            <div class="badges-wrapper">
-                                <span class="badge-tag"><i class="fa-solid fa-wheelchair"></i> Motora</span>
-                                <span class="badge-tag"><i class="fa-solid fa-eye"></i> Braille</span>
-                            </div>
-                            <button class="btn-explorar-card" onclick="abrirDetalhes('Hotel Paraíso Acessível', 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80', 'Quartos totalmente adaptados com barras de apoio, rampas suaves na entrada e piscina com elevador hidráulico de acesso universal.', '4.8', '42', '5.0', '4.6', '4.2', 'Mariana Souza (Cadeira de Rodas)', 'Experiência perfeita! O quarto possui excelente área de giro para manobras.', 'Carlos Eduardo (Deficiência Visual)', 'A recepção está preparada e o menu do restaurante tem versão completa em Braille.')">Explorar <i class="fa-solid fa-chevron-right"></i></button>
-                        </div>
-                    </div>
+            <div style="margin-bottom: 20px;">
+                <div style="display: flex; gap: 10px;">
+                    <button id="perfil-usuario" style="flex: 1; padding: 10px; border: 2px solid #0055ff; background: #f0f5ff; border-radius: 10px; font-weight: 600; font-size: 13px; cursor: pointer;" onclick="selecionarPerfilModal('usuario')"><i class="fa-solid fa-user"></i> Usuário</button>
+                    <button id="perfil-empresa" style="flex: 1; padding: 10px; border: 2px solid #e2e8f0; background: #ffffff; border-radius: 10px; font-weight: 600; font-size: 13px; color: #475569; cursor: pointer;" onclick="selecionarPerfilModal('empresa')"><i class="fa-solid fa-building"></i> Empresa</button>
                 </div>
-
-                <div class="destino-card">
-                    <div class="destino-img-container">
-                        <img src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=600&q=80" alt="Parque com caminhos planos">
-                        <span class="nota-badge"><i class="fa-solid fa-star"></i> 4.9</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-title">Parque Ecológico Central</div>
-                        <div class="card-rating">
-                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                            <span class="rating-count">(68 avaliações)</span>
-                        </div>
-                        <p>Trilhos pavimentados planos, mapas táteis para orientação e guias de áudio detalhados disponíveis na entrada do parque.</p>
-                        <div class="card-footer-layout">
-                            <div class="badges-wrapper">
-                                <span class="badge-tag"><i class="fa-solid fa-eye-slash"></i> Visual</span>
-                                <span class="badge-tag"><i class="fa-solid fa-brain"></i> Neuro</span>
-                            </div>
-                            <button class="btn-explorar-card" onclick="abrirDetalhes('Parque Ecológico Central', 'https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=800&q=80', 'Trilhos pavimentados planos perfeitos para cadeiras de rodas, mapas táteis detalhados para orientação autônoma e guias de áudio explicativos.', '4.9', '68', '4.5', '5.0', '4.0', 'Fernanda Lima (Deficiência Visual)', 'Os mapas táteis na entrada me ajudaram muito a me localizar sozinha por todo o trajeto!', 'Roberto Alves (Autismo)', 'Ambiente muito calmo, arborizado e bem sinalizado, excelente para regulação sensorial.')">Explorar <i class="fa-solid fa-chevron-right"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="destino-card">
-                    <div class="destino-img-container">
-                        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" alt="Praia com esteira de acessibilidade">
-                        <span class="nota-badge"><i class="fa-solid fa-star"></i> 4.7</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-title">Praia da Inclusão Marítima</div>
-                        <div class="card-rating">
-                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
-                            <span class="rating-count">(55 avaliações)</span>
-                        </div>
-                        <p>Conta com esteiras de borracha na areia até ao mar, cadeiras anfíbias e guarda-vidas preparados para auxílio.</p>
-                        <div class="card-footer-layout">
-                            <div class="badges-wrapper">
-                                <span class="badge-tag"><i class="fa-solid fa-wheelchair"></i> Motora</span>
-                                <span class="badge-tag"><i class="fa-solid fa-ear-deaf"></i> Auditiva</span>
-                            </div>
-                            <button class="btn-explorar-card" onclick="abrirDetalhes('Praia da Inclusão Marítima', 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80', 'Uma estrutura de praia acessível fantástica que conta com esteiras adaptadas sobre a areia quente e cadeiras anfíbias gratuitas.', '4.7', '55', '4.9', '4.0', '4.5', 'Juliana Costa (Cadeira de Rodas)', 'Consegui entrar no mar com segurança depois de anos graças à cadeira anfíbia e aos monitores!', 'Ricardo Melo (Surdo)', 'Os guarda-vidas sabiam o básico de Libras e foram super atenciosos e acolhedores.')">Explorar <i class="fa-solid fa-chevron-right"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="destino-card">
-                    <div class="destino-img-container">
-                        <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80" alt="Interior de um museu moderno">
-                        <span class="nota-badge"><i class="fa-solid fa-star"></i> 4.6</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-title">Museu de Arte Moderna</div>
-                        <div class="card-rating">
-                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                            <span class="rating-count">(31 avaliações)</span>
-                        </div>
-                        <p>Elevadores panorâmicos amplos, maquetes em relevo tátil para obras e sinalização intuitiva por pictogramas organizados.</p>
-                        <div class="card-footer-layout">
-                            <div class="badges-wrapper">
-                                <span class="badge-tag"><i class="fa-solid fa-eye"></i> Visual</span>
-                                <span class="badge-tag"><i class="fa-solid fa-universal-access"></i> Geral</span>
-                            </div>
-                            <button class="btn-explorar-card" onclick="abrirDetalhes('Museu de Arte Moderna', 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80', 'O museu conta com elevadores panorâmicos amplos, maquetes em relevo tátil para pessoas com deficiência visual e sinalização por pictogramas didáticos.', '4.6', '31', '4.4', '4.9', '4.5', 'Aline Silva (Baixa Visão)', 'Os audioguias descrevem perfeitamente o posicionamento e detalhes das obras. Fiquei encantada.', 'Pedro Rocha (Cadeirante)', 'Os elevadores internos são grandes, modernos e fáceis de operar sem ajuda.')">Explorar <i class="fa-solid fa-chevron-right"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="destino-card">
-                    <div class="destino-img-container">
-                        <img src="https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?auto=format&fit=crop&w=600&q=80" alt="Palco de um grande teatro">
-                        <span class="nota-badge"><i class="fa-solid fa-star"></i> 4.9</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-title">Teatro Municipal Alfa</div>
-                        <div class="card-rating">
-                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                            <span class="rating-count">(89 avaliações)</span>
-                        </div>
-                        <p>Assentos reservados, peças com tradução simultânea em Libras e fones especiais para audiodescrição em tempo real.</p>
-                        <div class="card-footer-layout">
-                            <div class="badges-wrapper">
-                                <span class="badge-tag"><i class="fa-solid fa-ear-deaf"></i> Auditiva</span>
-                                <span class="badge-tag"><i class="fa-solid fa-wheelchair"></i> Motora</span>
-                            </div>
-                            <button class="btn-explorar-card" onclick="abrirDetalhes('Teatro Municipal Alfa', 'https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?auto=format&fit=crop&w=800&q=80', 'Assentos reservados amplos localizados em excelentes pontos da plateia, peças com tradução simultânea em Libras e fones especiais para audiodescrição.', '4.9', '89', '4.5', '4.8', '4.9', 'Thiago Mendes (Surdo)', 'Os intérpretes de Libras ficam muito bem posicionados e visíveis. Nota dez para o respeito com o público.', 'Letícia Ramos (Cadeirante)', 'A rampa de acesso direto para a plateia central facilitou demais a minha entrada no espetáculo.')">Explorar <i class="fa-solid fa-chevron-right"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="destino-card">
-                    <div class="destino-img-container">
-                        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80" alt="Mesas organizadas em um restaurante aconchegante">
-                        <span class="nota-badge"><i class="fa-solid fa-star"></i> 4.5</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-title">Restaurante Sabor & Calma</div>
-                        <div class="card-rating">
-                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
-                            <span class="rating-count">(24 avaliações)</span>
-                        </div>
-                        <p>Mesas reguláveis, cardápios em Braille e uma área de refúgio isolada acusticamente para regulação sensorial confortável.</p>
-                        <div class="card-footer-layout">
-                            <div class="badges-wrapper">
-                                <span class="badge-tag"><i class="fa-solid fa-brain"></i> Neuro</span>
-                                <span class="badge-tag"><i class="fa-solid fa-eye"></i> Visual</span>
-                            </div>
-                            <button class="btn-explorar-card" onclick="abrirDetalhes('Restaurante Sabor & Calma', 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80', 'Mesas reguláveis na altura para encaixe perfeito de cadeiras de rodas, ementas traduzidas em Braille e uma sala silenciosa excelente para regulação.', '4.5', '24', '4.5', '4.2', '4.8', 'Beatriz Castilho (Autismo)', 'A sala reservada e silenciosa salvou nosso jantar de família. Sem excesso de barulhos ou luzes fortes.', 'Lucas Lima (Cadeirante)', 'As mesas de centro se ajustam perfeitamente na altura da minha cadeira de rodas, super confortável.')">Explorar <i class="fa-solid fa-chevron-right"></i></button>
-                        </div>
-                    </div>
-                </div>
-
             </div>
+            <form id="form-autenticacao" onsubmit="processarAutenticacao(event)" style="display: flex; flex-direction: column; gap: 15px; text-align: left;">
+                <div id="campo-nome-cadastro" style="display: none;">
+                    <label style="display:block; font-size:12px; font-weight:700; color:#475569; margin-bottom:4px;">Nome / Razão Social</label>
+                    <input type="text" id="auth-nome" placeholder="Seu nome" style="width:100%; padding:12px; border-radius:10px; border:1px solid #cbd5e1; outline:none;">
+                </div>
+                <div>
+                    <label style="display:block; font-size:12px; font-weight:700; color:#475569; margin-bottom:4px;">E-mail</label>
+                    <input type="email" id="auth-email" placeholder="seuemail@exemplo.com" required style="width:100%; padding:12px; border-radius:10px; border:1px solid #cbd5e1; outline:none;">
+                </div>
+                <div>
+                    <label style="display:block; font-size:12px; font-weight:700; color:#475569; margin-bottom:4px;">Senha</label>
+                    <input type="password" id="auth-senha" placeholder="••••••••" required style="width:100%; padding:12px; border-radius:10px; border:1px solid #cbd5e1; outline:none;">
+                </div>
+                <button type="submit" id="btn-submit-auth" style="background:#0055ff; color:#ffffff; border:none; padding:14px; border-radius:30px; font-weight:700; cursor:pointer; font-size:14px; text-align: center;"><i class="fa-solid fa-check"></i> Avançar</button>
+            </form>
+            <button onclick="fecharModalLogin()" style="margin-top: 20px; background: none; border: none; color: #64748b; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: underline;">Cancelar</button>
         </div>
     </div>
 
+    <div class="search-container">
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="input-busca" placeholder="Digite o nome do local ou endereço..." oninput="filtrarDestinos()">
+        </div>
+        <div class="filter-buttons">
+            <button class="btn-filter active" onclick="filtrarPorCategoria('Todos', this)"><i class="fa-solid fa-border-all"></i> Todos</button>
+            <button class="btn-filter" onclick="filtrarPorCategoria('Restaurante', this)"><i class="fa-solid fa-utensils"></i> Restaurantes</button>
+            <button class="btn-filter" onclick="filtrarPorCategoria('Hospedagem', this)"><i class="fa-solid fa-bed"></i> Hospedagem</button>
+            <button class="btn-filter" onclick="filtrarPorCategoria('Ponto Turístico', this)"><i class="fa-solid fa-camera"></i> Pontos Turísticos</button>
+        </div>
+    </div>
+
+    <main class="destinations-grid" id="grid-destinos-publicos"></main>
+
     <script>
-        function abrirDetalhes(nome, img, desc, notaGeral, avaliacoes, nMotora, nVisual, nAuditiva, u1, c1, u2, c2) {
-            const dados = { nome, img, desc, notaGeral, avaliacoes, nMotora, nVisual, nAuditiva, u1, c1, u2, c2 };
-            localStorage.setItem('destinoSelecionado', JSON.stringify(dados));
-            window.location.href = 'detalhes.html';
+        let categoriaAtual = "Todos";
+        let modoAtual = 'entrar';
+        let perfilSelecionado = 'usuario';
+
+        document.addEventListener("DOMContentLoaded", function() {
+            verificarEstadoLoginGlobal();
+
+            if (!localStorage.getItem('bancoDestinos')) {
+                const basePadrao = [
+                    { nome: "Restaurante Central", categoria: "Restaurante", endereco: "Rua das Flores, Centro 123 - SP", desc: "Cozinha contemporânea com foco em inclusão e conforto para todos os públicos.", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500", notaGeral: "4.8", nMotora: "4.8", nVisual: "4.5", comentariosLista: [] },
+                    { nome: "Hotel Paraíso Acessível", categoria: "Hospedagem", endereco: "Av Oceanica, 450 - BA", desc: "Quartos amplos adaptados e rampa com acesso direto à areia da praia.", img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=500", notaGeral: "5.0", nMotora: "5.0", nVisual: "4.0", comentariosLista: [] }
+                ];
+                localStorage.setItem('bancoDestinos', JSON.stringify(basePadrao));
+            }
+            renderizarCards();
+
+            window.addEventListener('click', function(e) {
+                const dropdown = document.getElementById('dropdown-perfil-empresa');
+                const avatarBtn = document.getElementById('user-avatar');
+                if (dropdown && !dropdown.contains(e.target) && avatarBtn && !avatarBtn.contains(e.target)) {
+                    dropdown.style.display = 'none';
+                }
+            });
+        });
+
+        function abrirModalLogin() { document.getElementById('modalLogin').style.display = 'flex'; mudarAbaModal('entrar'); }
+        function fecharModalLogin() { document.getElementById('modalLogin').style.display = 'none'; }
+
+        function mudarAbaModal(modo) {
+            modoAtual = modo;
+            const tabEntrar = document.getElementById('tab-entrar');
+            const tabCadastrar = document.getElementById('tab-cadastrar');
+            const campoNome = document.getElementById('campo-nome-cadastro');
+            const btnSubmit = document.getElementById('btn-submit-auth');
+
+            if(modo === 'entrar') {
+                tabEntrar.style.color = '#0055ff'; tabEntrar.style.borderBottom = '2px solid #0055ff';
+                tabCadastrar.style.color = '#64748b'; tabCadastrar.style.borderBottom = 'none';
+                campoNome.style.display = 'none';
+                btnSubmit.innerHTML = '<i class="fa-solid fa-check"></i> Acessar Plataforma';
+            } else {
+                tabCadastrar.style.color = '#0055ff'; tabCadastrar.style.borderBottom = '2px solid #0055ff';
+                tabEntrar.style.color = '#64748b'; tabEntrar.style.borderBottom = 'none';
+                campoNome.style.display = 'block';
+                btnSubmit.innerHTML = '<i class="fa-solid fa-user-plus"></i> Concluir Cadastro';
+            }
         }
-        function mudarFonte(direcao) {
-            if(direcao === 1) document.body.classList.add('fonte-grande');
-            else document.body.classList.remove('fonte-grande');
+
+        function selecionarPerfilModal(perfil) {
+            perfilSelecionado = perfil;
+            const btnUsuario = document.getElementById('perfil-usuario');
+            const btnEmpresa = document.getElementById('perfil-empresa');
+            if(perfil === 'usuario') {
+                btnUsuario.style.borderColor = '#0055ff'; btnUsuario.style.background = '#f0f5ff';
+                btnEmpresa.style.borderColor = '#e2e8f0'; btnEmpresa.style.background = '#ffffff';
+            } else {
+                btnEmpresa.style.borderColor = '#0055ff'; btnEmpresa.style.background = '#f0f5ff';
+                btnUsuario.style.borderColor = '#e2e8f0'; btnUsuario.style.background = '#ffffff';
+            }
         }
-        function alternarContraste() {
-            document.body.classList.toggle('alto-contraste');
+
+        function processarAutenticacao(event) {
+            event.preventDefault();
+            localStorage.setItem('tipoLogado', perfilSelecionado);
+            fecharModalLogin();
+            window.location.reload();
+        }
+
+        function removerLoginGlobal() {
+            localStorage.removeItem('tipoLogado');
+            window.location.reload();
+        }
+
+        function verificarEstadoLoginGlobal() {
+            const tipoLogado = localStorage.getItem('tipoLogado');
+            const areaDeslogado = document.getElementById('area-deslogado');
+            const areaLogada = document.getElementById('area-logada');
+            const avatar = document.getElementById('user-avatar');
+            const linkEmpresa = document.getElementById('link-painel-empresa');
+
+            if (tipoLogado) {
+                areaDeslogado.style.display = "none";
+                areaLogada.style.display = "block";
+                if(tipoLogado === 'empresa') {
+                    avatar.innerText = "E"; avatar.className = "user-avatar-btn avatar-empresa";
+                    if(linkEmpresa) linkEmpresa.style.display = "block";
+                } else {
+                    avatar.innerText = "U"; avatar.className = "user-avatar-btn avatar-usuario";
+                    if(linkEmpresa) linkEmpresa.style.display = "none";
+                }
+            } else {
+                areaDeslogado.style.display = "flex";
+                areaLogada.style.display = "none";
+            }
+        }
+
+        function toggleMenuDropdown() {
+            const dropdown = document.getElementById('dropdown-perfil-empresa');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function renderizarCards() {
+            const listaLocais = JSON.parse(localStorage.getItem('bancoDestinos')) || [];
+            const container = document.getElementById('grid-destinos-publicos');
+            const termoBusca = document.getElementById('input-busca').value.toLowerCase();
+            container.innerHTML = "";
+
+            listaLocais.forEach(local => {
+                const bateCategoria = (categoriaAtual === "Todos" || local.categoria === categoriaAtual);
+                const bateTexto = local.nome.toLowerCase().includes(termoBusca) || local.endereco.toLowerCase().includes(termoBusca);
+
+                if (bateCategoria && bateTexto) {
+                    container.innerHTML += `
+                        <div class="dest-card">
+                            <div class="dest-img-wrapper">
+                                <span class="category-tag">${local.categoria}</span>
+                                <img src="${local.img}">
+                            </div>
+                            <div class="dest-content">
+                                <div class="dest-info">
+                                    <h3>${local.nome}</h3>
+                                    <div class="address"><i class="fa-solid fa-location-dot"></i> ${local.endereco}</div>
+                                    <p class="desc">${local.desc || "Sem descrição."}</p>
+                                    <div class="card-acc-badges">
+                                        <div class="acc-badge"><i class="fa-solid fa-wheelchair-move"></i> M: ${local.nMotora}</div>
+                                        <div class="acc-badge"><i class="fa-solid fa-person-walking-with-cane"></i> V: ${local.nVisual}</div>
+                                    </div>
+                                </div>
+                                <div class="dest-footer">
+                                    <div class="rating-box"><i class="fa-solid fa-star"></i> ${local.notaGeral}</div>
+                                    <button class="btn-ver-detalhes" onclick="verDetalhesDoLocal('${local.nome}')"><i class="fa-solid fa-circle-info"></i> Ver Detalhes</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        function filtrarPorCategoria(cat, elemento) {
+            categoriaAtual = cat;
+            document.querySelectorAll('.btn-filter').forEach(btn => btn.classList.remove('active'));
+            elemento.classList.add('active');
+            renderizarCards();
+        }
+        function filtrarDestinos() { renderizarCards(); }
+
+        function verDetalhesDoLocal(nomeLocal) {
+            const listaLocais = JSON.parse(localStorage.getItem('bancoDestinos')) || [];
+            const localEncontrado = listaLocais.find(l => l.nome === nomeLocal);
+            if (localEncontrado) {
+                localStorage.setItem('destinoSelecionado', JSON.stringify(localEncontrado));
+                window.location.href = "detalhes.html";
+            }
         }
     </script>
 </body>

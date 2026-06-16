@@ -3,112 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Viagens sem Barreiras - Diretrizes de Acessibilidade</title>
+    <title>Viagens sem Barreiras - Acessibilidade</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* CONFIGURAÇÕES GERAIS E ANIMAÇÕES */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; transition: all 0.3s ease; }
-        body { background-color: #f3f6fa; color: #051334; padding-top: 140px; font-size: 16px; overflow-x: hidden; }
-        
-        /* ACESSIBILIDADE: TAMANHO DE FONTE */
-        body.fonte-grande { font-size: 20px; }
-        body.fonte-grande h1 { font-size: 42px; }
-        body.fonte-grande h2 { font-size: 28px; }
-        body.fonte-grande p, body.fonte-grande li, body.fonte-grande .faq-trigger { font-size: 18px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; transition: all 0.25s ease; }
+        body { background-color: #f8fafc; color: #051334; padding-top: 120px; }
 
-        /* ACESSIBILIDADE: ALTO CONTRASTE */
-        body.alto-contraste { background-color: #000000 !important; color: #ffffff !important; }
-        body.alto-contraste .landing-header { background-color: #000000 !important; border-bottom: 2px solid #ffff00; }
-        body.alto-contraste .landing-nav a { color: #ffffff !important; }
-        body.alto-contraste .landing-nav a.active { color: #ffff00 !important; }
-        body.alto-contraste .info-card, 
-        body.alto-contraste .filter-pill,
-        body.alto-contraste .critério-box,
-        body.alto-contraste .acc-panel-box,
-        body.alto-contraste .faq-item,
-        body.alto-contraste .prática-box { background: #000000 !important; border: 2px solid #ffff00 !important; color: #ffffff !important; }
-        body.alto-contraste h1, body.alto-contraste h2, body.alto-contraste h3, body.alto-contraste i { color: #ffff00 !important; }
-        body.alto-contraste .filter-pill.active { background: #ffff00 !important; color: #000000 !important; }
-        body.alto-contraste .faq-panel, body.alto-contraste .filter-content-display { background-color: #121212 !important; }
-        body.alto-contraste .faq-panel p { color: #ffffff !important; }
-        body.alto-contraste .btn-entrar { border: 1px solid #ffff00 !important; color: #ffff00 !important; }
-        body.alto-contraste .btn-entrar:hover { background: #ffff00 !important; color: #000000 !important; }
-        body.alto-contraste .btn-criar { background: #ffff00 !important; color: #000000 !important; }
-        body.alto-contraste .btn-criar:hover { background: #bfbf00 !important; }
-
-        /* HEADER (MENU DE NAVEGAÇÃO UNIFICADO) */
-        .site-logo-svg { height: 52px; width: auto; display: block; }
+        /* HEADER GLOBAL */
+        .landing-header { position: fixed; top: 0; left: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 24px 80px; z-index: 100; background-color: rgba(248, 250, 252, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid #e2e8f0; }
+        .site-logo-svg { height: 52px; width: auto; }
         .site-logo-svg .accent-blue { fill: #0055ff; }
         .site-logo-svg .accent-dark { fill: #051334; }
-        .landing-header { position: fixed; top: 0; left: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 24px 80px; z-index: 100; background-color: rgba(243, 246, 250, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid #e2e8f0; }
         .landing-nav { display: flex; align-items: center; gap: 30px; }
-        .landing-nav a { color: #051334; text-decoration: none; font-size: 14px; font-weight: 700; letter-spacing: 0.5px; }
-        .landing-nav a:hover, .landing-nav a.active { color: #0055ff; }
+        .landing-nav a { color: #051334; text-decoration: none; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+        .landing-nav a.active { color: #0055ff; }
 
-        /* BOTÕES DE AUTENTICAÇÃO */
-        .nav-auth { display: flex; align-items: center; gap: 15px; margin-left: 15px; }
-        .btn-entrar { color: #0055ff !important; border: 1px solid #0055ff; padding: 8px 18px; border-radius: 20px; }
-        .btn-entrar:hover { background-color: #0055ff; color: #ffffff !important; }
-        .btn-criar { background-color: #0055ff; color: #ffffff !important; padding: 9px 20px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0, 85, 255, 0.2); }
-        .btn-criar:hover { background-color: #003ccb; transform: translateY(-1px); }
-
-        /* LAYOUT PRINCIPAL COM ANIMAÇÃO DE ENTRADA */
-        .main-container { max-width: 1100px; margin: 0 auto 80px auto; padding: 0 20px; animation: fadeInUp 0.6s ease-out; }
-        .info-card { background: #ffffff; border-radius: 24px; padding: 50px; border: 1px solid #e2e8f0; box-shadow: 0 12px 40px rgba(5, 19, 52, 0.04); }
+        .nav-auth { display: flex; align-items: center; gap: 15px; margin-left: 15px; position: relative; }
+        .btn-entrar { color: #0055ff !important; border: 1px solid #0055ff; padding: 8px 18px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 700; cursor: pointer; }
+        .btn-criar { background-color: #0055ff; color: #ffffff !important; padding: 9px 20px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 700; cursor: pointer; }
         
-        h1 { font-size: 38px; font-weight: 700; margin-bottom: 20px; color: #051334; }
-        .subtitle { font-size: 18px; color: #64748b; line-height: 1.6; margin-bottom: 40px; }
-        h2 { font-size: 24px; font-weight: 700; margin: 45px 0 20px 0; color: #051334; display: flex; align-items: center; gap: 12px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
-        h2 i { color: #0055ff; }
-        p { line-height: 1.8; margin-bottom: 20px; color: #334155; }
+        .user-avatar-btn { width: 42px; height: 42px; color: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; cursor: pointer; font-size: 16px; user-select: none; }
+        .avatar-empresa { background: #d97706; }
+        .avatar-usuario { background: #0055ff; }
 
-        /* PAINEL DE FERRAMENTAS FLUTUANTES */
-        .acc-panel-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px; display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 30px; }
-        .acc-btn { background: #ffffff; border: 1px solid #cbd5e1; padding: 12px 24px; border-radius: 30px; font-weight: 600; font-size: 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; color: #334155; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
-        .acc-btn:hover { background: #0055ff; color: #ffffff; border-color: #0055ff; transform: translateY(-2px); }
+        .dropdown-menu { display: none; position: absolute; top: 50px; right: 0; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; width: 180px; box-shadow: 0 10px 25px rgba(5,19,52,0.1); z-index: 1000; overflow: hidden; }
+        .dropdown-menu a { display: block; padding: 12px 16px; text-decoration: none; color: #051334; font-size: 14px; font-weight: 600; }
+        .dropdown-menu a:hover { background: #f8fafc; color: #0055ff; }
+        .dropdown-menu .divider { border-top: 1px solid #e2e8f0; margin: 4px 0; }
 
-        /* SEÇÃO DE FILTROS POR PERFIL */
-        .filters-container { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 25px; }
-        .filter-pill { background: #ffffff; border: 1px solid #e2e8f0; padding: 14px 24px; border-radius: 14px; font-weight: 600; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; color: #475569; }
-        .filter-pill:hover { border-color: #0055ff; color: #0055ff; }
-        .filter-pill.active { background: #0055ff; color: #ffffff; border-color: #0055ff; box-shadow: 0 4px 14px rgba(0, 85, 255, 0.25); }
-        .filter-content-display { background: #f8fafc; border-radius: 16px; padding: 30px; border: 1px solid #e2e8f0; min-height: 120px; margin-bottom: 40px; }
-        .filter-content-display ul { padding-left: 20px; }
-        .filter-content-display li { margin-bottom: 10px; line-height: 1.6; color: #475569; }
+        .modal-login-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 19, 52, 0.6); backdrop-filter: blur(4px); z-index: 200; align-items: center; justify-content: center; }
+        .modal-login-card { background: #ffffff; padding: 35px; border-radius: 24px; max-width: 420px; width: 90%; text-align: center; }
 
-        /* GRID DE CRITÉRIOS */
-        .critérios-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 25px; }
-        .critério-box { background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 20px; padding: 30px; text-align: left; box-shadow: 0 4px 15px rgba(0,0,0,0.01); }
-        .critério-box:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(5,19,52,0.05); }
-        .critério-box i { font-size: 36px; margin-bottom: 15px; display: block; }
-        .critério-box h3 { font-size: 18px; font-weight: 700; margin-bottom: 12px; color: #051334; }
-        .critério-box p { font-size: 14px; color: #64748b; line-height: 1.6; margin: 0; }
+        /* PILARES */
+        .info-container { max-width: 1200px; margin: 20px auto 60px auto; padding: 0 20px; }
+        .info-header { text-align: center; max-width: 700px; margin: 0 auto 50px auto; }
+        .info-header h1 { font-size: 40px; font-weight: 700; color: #051334; margin-bottom: 16px; }
+        .info-header p { color: #64748b; font-size: 16px; line-height: 1.6; }
 
-        /* MANUAL DE BOAS PRÁTICAS */
-        .práticas-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
-        .prática-box { background: #fafafa; border: 1px solid #e2e8f0; border-radius: 16px; padding: 25px; }
-        .prática-box h3 { font-size: 16px; margin-bottom: 10px; color: #051334; font-weight: 700; }
+        .cards-pillars { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        .pillar-card { background: #ffffff; border: 1px solid #e2e8f0; padding: 40px 35px; border-radius: 24px; display: flex; flex-direction: column; gap: 20px; position: relative; overflow: hidden; }
+        .pillar-card:hover { transform: translateY(-6px); border-color: #cbd5e1; }
+        
+        .icon-wrapper { width: 60px; height: 60px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        .motora-style { background: #e0eaff; color: #0055ff; }
+        .visual-style { background: #fef3c7; color: #d97706; }
+        .auditiva-style { background: #d1fae5; color: #10b981; }
 
-        /* COMPONENTE FAQ SANFONA */
-        .faq-container { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
-        .faq-item { border: 1px solid #e2e8f0; border-radius: 14px; overflow: hidden; background-color: #ffffff; }
-        .faq-trigger { width: 100%; background: none; border: none; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; text-align: left; font-size: 16px; font-weight: 600; color: #051334; cursor: pointer; }
-        .faq-trigger:hover { background-color: #f8fafc; }
-        .faq-trigger i { color: #0055ff; font-size: 14px; transition: transform 0.3s ease; }
-        .faq-panel { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out, padding 0.3s ease; background-color: #f8fafc; padding: 0 24px; }
-        .faq-panel p { font-size: 14px; color: #475569; line-height: 1.7; margin: 0; padding-bottom: 20px; }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @media (max-width: 992px) {
-            .landing-header { padding: 20px 30px; flex-direction: column; gap: 15px; }
-            body { padding-top: 180px; }
-        }
+        .pillar-card h3 { font-size: 22px; font-weight: 700; color: #051334; }
+        .pillar-card p { font-size: 15px; color: #475569; line-height: 1.7; }
+        .card-line { position: absolute; bottom: 0; left: 0; width: 100%; height: 4px; }
+        .motora-line { background: #0055ff; }
+        .visual-line { background: #d97706; }
+        .auditiva-line { background: #10b981; }
     </style>
 </head>
 <body>
@@ -117,152 +65,131 @@
         <div class="landing-brand-wrapper">
             <svg class="site-logo-svg" viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg">
                 <rect class="accent-blue" x="20" y="20" width="16" height="40" rx="8" />
-                <rect class="accent-blue" x="42" y="28" width="16" height="32" rx="8" />
                 <rect class="accent-dark" x="64" y="12" width="16" height="48" rx="8" />
                 <text class="accent-dark" x="95" y="48" font-size="22" font-weight="700">Viagens sem</text>
                 <text class="accent-blue" x="95" y="68" font-size="22" font-weight="700">Barreiras</text>
             </svg>
         </div>
         <nav class="landing-nav">
-            <a href="index.html">INÍCIO</a>
-            <a href="destinos.html">DESTINOS</a>
-            <a href="acessibilidade.html" class="active">ACESSIBILIDADE</a>
-            <a href="sobre.html">SOBRE NÓS</a>
+            <a href="index.html"><i class="fa-solid fa-house"></i> INÍCIO</a>
+            <a href="destinos.html"><i class="fa-solid fa-compass"></i> DESTINOS</a>
+            <a href="acessibilidade.html" class="active"><i class="fa-solid fa-universal-access"></i> ACESSIBILIDADE</a>
             
             <div class="nav-auth">
-                <a href="login.html" class="btn-entrar">Entrar</a>
-                <a href="cadastro.html" class="btn-criar">Criar Conta</a>
+                <div id="area-deslogado" style="display: flex; gap: 15px;">
+                    <a href="#" onclick="abrirModalLogin(); return false;" class="btn-entrar">Entrar</a>
+                    <a href="#" onclick="abrirModalLogin(); return false;" class="btn-criar">Criar Conta</a>
+                </div>
+                
+                <div id="area-logada" style="display: none;">
+                    <div id="user-avatar" class="user-avatar-btn" onclick="toggleMenuDropdown()">?</div>
+                    <div class="dropdown-menu" id="dropdown-perfil-empresa">
+                        <a href="dashboard-negocio.html" id="link-painel-empresa"><i class="fa-solid fa-sliders"></i> Painel Empresa</a>
+                        <a href="favoritos.html"><i class="fa-solid fa-bookmark"></i> Meus Favoritos</a>
+                        <div class="divider"></div>
+                        <a href="#" onclick="removerLoginGlobal(); return false;" style="color: #ef4444;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair</a>
+                    </div>
+                </div>
             </div>
         </nav>
     </header>
 
-    <div class="main-container">
-        <div class="acc-panel-box">
-            <button class="acc-btn" onclick="mudarFonte(1)"><i class="fa-solid fa-font"></i> Aumentar Texto</button>
-            <button class="acc-btn" onclick="mudarFonte(-1)"><i class="fa-solid fa-font fa-sm"></i> Restaurar Fonte</button>
-            <button class="acc-btn" onclick="alternarContraste()"><i class="fa-solid fa-circle-half-stroke"></i> Modo Alto Contraste</button>
-        </div>
-
-        <div class="info-card">
-            <h1>Transparência e Inclusão</h1>
-            <p class="subtitle">O portal <strong>Viagens sem Barreiras</strong> promove o mapeamento urbano transparente. Entenda abaixo nossas diretrizes, parâmetros legais e como utilizar nossos filtros estruturais.</p>
-            
-            <h2><i class="fa-solid fa-sliders"></i> O que buscamos em cada perfil?</h2>
-            <div class="filters-container">
-                <button class="filter-pill active" onclick="mostrarPerfil('cadeirante', this)"><i class="fa-solid fa-wheelchair"></i> Cadeirante / PNE</button>
-                <button class="filter-pill" onclick="mostrarPerfil('visual', this)"><i class="fa-solid fa-eye-slash"></i> Deficiência Visual</button>
-                <button class="filter-pill" onclick="mostrarPerfil('auditiva', this)"><i class="fa-solid fa-ear-deaf"></i> Deficiência Auditiva</button>
-                <button class="filter-pill" onclick="mostrarPerfil('neuro', this)"><i class="fa-solid fa-brain"></i> Neurodivergente</button>
+    <div class="modal-login-overlay" id="modalLogin">
+        <div class="modal-login-card">
+            <div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">
+                <button id="tab-entrar" style="flex: 1; background: none; border: none; font-weight: 700; font-size: 16px; color: #0055ff; cursor: pointer;" onclick="mudarAbaModal('entrar')">Entrar</button>
+                <button id="tab-cadastrar" style="flex: 1; background: none; border: none; font-weight: 700; font-size: 16px; color: #64748b; cursor: pointer;" onclick="mudarAbaModal('cadastrar')">Criar Conta</button>
             </div>
-
-            <div class="filter-content-display" id="display-perfil">
-                <h4>Acessibilidade Motora & Cadeirante:</h4><br>
-                <ul>
-                    <li>Rampas com inclinação regulamentada e piso antiderrapante.</li>
-                    <li>Portas de acesso e corredores com no mínimo 80cm de vão livre.</li>
-                    <li>Banheiros adaptados isolados com barras de apoio fixas e espaço para manobra de cadeiras.</li>
-                </ul>
-            </div>
-
-            <h2><i class="fa-solid fa-gavel"></i> Legislação e Normas Técnicas</h2>
-            <p>Todo o ecossistema do portal baseia-se estritamente na legislação brasileira, com foco na <strong>Lei Brasileira de Inclusão (Lei nº 13.146)</strong> e nos parâmetros de construção civil unificados pela norma técnica <strong>ABNT NBR 9050</strong>.</p>
-
-            <h2><i class="fa-solid fa-chart-simple"></i> Classificação das Categorias do Índice</h2>
-            <div class="critérios-grid">
-                <div class="critério-box" style="border-top: 4px solid #ef4444;">
-                    <i class="fa-solid fa-circle-exclamation" style="color: #ef4444;"></i>
-                    <h3>Nível Crítico (Vermelho)</h3>
-                    <p>O local possui barreiras severas e impeditivas, como entradas exclusivas por escadarias, ausência completa de sanitários PNE ou portas inadequadas.</p>
-                </div>
-                <div class="critério-box" style="border-top: 4px solid #eab308;">
-                    <i class="fa-solid fa-triangle-exclamation" style="color: #eab308;"></i>
-                    <h3>Nível Regular (Amarelo)</h3>
-                    <p>O ambiente provê rampa ou elevador funcional, mas apresenta pequenas falhas de autonomia secundária, como balcões altos ou falta de guias táteis.</p>
-                </div>
-                <div class="critério-box" style="border-top: 4px solid #22c55e;">
-                    <i class="fa-solid fa-circle-check" style="color: #22c55e;"></i>
-                    <h3>Nível Excelente (Verde)</h3>
-                    <p>Instalações modelo com Desenho Universal aplicado. Rotas totalmente integradas, sinalização tátil completa, recursos em Braille e staff qualificado.</p>
+            <div style="margin-bottom: 20px;">
+                <div style="display: flex; gap: 10px;">
+                    <button id="perfil-usuario" style="flex: 1; padding: 10px; border: 2px solid #0055ff; background: #f0f5ff; border-radius: 10px; font-weight: 600; font-size: 13px; cursor: pointer;" onclick="selecionarPerfilModal('usuario')"><i class="fa-solid fa-user"></i> Usuário</button>
+                    <button id="perfil-empresa" style="flex: 1; padding: 10px; border: 2px solid #e2e8f0; background: #ffffff; border-radius: 10px; font-weight: 600; font-size: 13px; color: #475569; cursor: pointer;" onclick="selecionarPerfilModal('empresa')"><i class="fa-solid fa-building"></i> Empresa</button>
                 </div>
             </div>
-
-            <h2><i class="fa-solid fa-book-open"></i> Guia Prático para o Colaborador</h2>
-            <div class="práticas-grid">
-                <div class="prática-box">
-                    <h3><i class="fa-solid fa-camera" style="color: #0055ff; margin-right: 8px;"></i> O que fotografar?</h3>
-                    <p>Priorize imagens em detalhe: a altura da pia do banheiro, o espaço livre ao lado da cama do hotel e a inclinação real das rampas de acesso.</p>
+            <form id="form-autenticacao" onsubmit="processarAutenticacao(event)" style="display: flex; flex-direction: column; gap: 15px; text-align: left;">
+                <div id="campo-nome-cadastro" style="display: none;">
+                    <label style="display:block; font-size:12px; font-weight:700; color:#475569; margin-bottom:4px;">Nome / Razão Social</label>
+                    <input type="text" id="auth-nome" placeholder="Seu nome" style="width:100%; padding:12px; border-radius:10px; border:1px solid #cbd5e1; outline:none;">
                 </div>
-                <div class="prática-box">
-                    <h3><i class="fa-solid fa-pen-to-square" style="color: #0055ff; margin-right: 8px;"></i> O que relatar?</h3>
-                    <p>Mencione barreiras temporárias, como calçadas externas quebradas, elevadores de acessibilidade fora de serviço ou mau atendimento da equipe local.</p>
+                <div>
+                    <label style="display:block; font-size:12px; font-weight:700; color:#475569; margin-bottom:4px;">E-mail</label>
+                    <input type="email" id="auth-email" placeholder="seuemail@exemplo.com" required style="width:100%; padding:12px; border-radius:10px; border:1px solid #cbd5e1; outline:none;">
                 </div>
-            </div>
-
-            <h2><i class="fa-solid fa-circle-question"></i> Perguntas Frequentes</h2>
-            <div class="faq-container">
-                <div class="faq-item">
-                    <button class="faq-trigger" onclick="toggleFaq(this)">
-                        <span>Qualquer usuário pode enviar fotos e avaliações?</span>
-                        <i class="fa-solid fa-chevron-down"></i>
-                    </button>
-                    <div class="faq-panel">
-                        <p>Sim! Para manter a integridade da plataforma e mitigar spams, basta possuir um cadastro ativo e estar logado no portal para submeter mídias e notas.</p>
-                    </div>
+                <div>
+                    <label style="display:block; font-size:12px; font-weight:700; color:#475569; margin-bottom:4px;">Senha</label>
+                    <input type="password" id="auth-senha" placeholder="••••••••" required style="width:100%; padding:12px; border-radius:10px; border:1px solid #cbd5e1; outline:none;">
                 </div>
-                <div class="faq-item">
-                    <button class="faq-trigger" onclick="toggleFaq(this)">
-                        <span>Como agir caso encontre informações desatualizadas?</span>
-                        <i class="fa-solid fa-chevron-down"></i>
-                    </button>
-                    <div class="faq-panel">
-                        <p>Você pode utilizar o botão "Reportar Erro" presente no card do destino. Vistoriaremos os dados do local em até 48 horas úteis.</p>
-                    </div>
-                </div>
-            </div>
+                <button type="submit" id="btn-submit-auth" style="background:#0055ff; color:#ffffff; border:none; padding:14px; border-radius:30px; font-weight:700; cursor:pointer; font-size:14px; text-align: center;"><i class="fa-solid fa-check"></i> Avançar</button>
+            </form>
+            <button onclick="fecharModalLogin()" style="margin-top: 20px; background: none; border: none; color: #64748b; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: underline;">Cancelar</button>
         </div>
     </div>
 
+    <main class="info-container">
+        <div class="info-header">
+            <h1>Nossos Compromissos</h1>
+            <p>Conheça os pilares fundamentais de acessibilidade que avaliamos rigorosamente em cada estabelecimento.</p>
+        </div>
+
+        <div class="cards-pillars">
+            <div class="pillar-card">
+                <div class="icon-wrapper motora-style"><i class="fa-solid fa-wheelchair-move"></i></div>
+                <h3>Acessibilidade Motora</h3>
+                <p>Análise de infraestrutura física contendo rampas com inclinação correta, portas alargadas, elevadores acessíveis e banheiros completamente adaptados.</p>
+                <div class="card-line motora-line"></div>
+            </div>
+            <div class="pillar-card">
+                <div class="icon-wrapper visual-style"><i class="fa-solid fa-person-walking-with-cane"></i></div>
+                <h3>Acessibilidade Visual</h3>
+                <p>Mapeamento de rotas com piso tátil de alerta e direcionamento, sinalização em Braille nos pontos-chave e facilitação de cardápios por áudio ou QR Code.</p>
+                <div class="card-line visual-line"></div>
+            </div>
+            <div class="pillar-card">
+                <div class="icon-wrapper auditiva-style"><i class="fa-solid fa-ear-deaf"></i></div>
+                <h3>Acessibilidade Auditiva</h3>
+                <p>Suporte para comunicação clara por meio de atendentes capacitados em Libras, informativos e avisos totalmente visuais.</p>
+                <div class="card-line auditiva-line"></div>
+            </div>
+        </div>
+    </main>
+
     <script>
-        const perfisDados = {
-            cadeirante: `<h4>Acessibilidade Motora & Cadeirante:</h4><br><ul><li>Rampas com inclinação regulamentada e piso antiderrapante.</li><li>Portas de acesso e corredores com no mínimo 80cm de vão livre.</li><li>Banheiros adaptados isolados com barras de apoio fixas.</li></ul>`,
-            visual: `<h4>Acessibilidade Visual:</h4><br><ul><li>Piso tátil direcional e de alerta texturizado.</li><li>Sinalização de segurança e mapas transcritos em Braille.</li><li>Disponibilização de áudio descritivo ou compatibilidade nativa com leitores de tela.</li></ul>`,
-            auditiva: `<h4>Acessibilidade Auditiva:</h4><br><ul><li>Presença de profissionais capacitados em Libras.</li><li>Sistemas de alarmes visuais redundantes (strobe lights).</li><li>Legendas obrigatórias ou totens interativos com tradução simultânea.</li></ul>`,
-            neuro: `<h4>Acessibilidade Cognitiva / Neurodivergência:</h4><br><ul><li>Ambientes controlados e salas de descompressão dedicadas.</li><li>Sinalização facilitada mapeada por pictogramas objetivos.</li><li>Políticas internas para redução planejada de ruídos.</li></ul>`
-        };
+        let modoAtual = 'entrar';
+        let perfilSelecionado = 'usuario';
 
-        function mostrarPerfil(tipo, botao) {
-            document.querySelectorAll('.filter-pill').forEach(btn => btn.classList.remove('active'));
-            botao.classList.add('active');
-            const display = document.getElementById('display-perfil');
-            display.style.opacity = 0;
-            setTimeout(() => {
-                display.innerHTML = perfisDados[tipo];
-                display.style.opacity = 1;
-            }, 150);
+        document.addEventListener("DOMContentLoaded", function() {
+            verificarEstadoLoginGlobal();
+        });
+
+        function abrirModalLogin() { document.getElementById('modalLogin').style.display = 'flex'; }
+        function fecharModalLogin() { document.getElementById('modalLogin').style.display = 'none'; }
+        function mudarAbaModal(modo) {
+            modoAtual = modo;
+            const campoNome = document.getElementById('campo-nome-cadastro');
+            if(modo === 'entrar') { campoNome.style.display = 'none'; } else { campoNome.style.display = 'block'; }
         }
-
-        function mudarFonte(direcao) {
-            if(direcao === 1) document.body.classList.add('fonte-grande');
-            else document.body.classList.remove('fonte-grande');
+        function selecionarPerfilModal(perfil) { perfilSelecionado = perfil; }
+        function processarAutenticacao(event) {
+            event.preventDefault();
+            localStorage.setItem('tipoLogado', perfilSelecionado);
+            fecharModalLogin();
+            window.location.reload();
         }
-
-        function alternarContraste() {
-            document.body.classList.toggle('alto-contraste');
-        }
-
-        function toggleFaq(botao) {
-            const painel = botao.nextElementSibling;
-            const icone = botao.querySelector('i');
-            const estaAberto = painel.style.maxHeight && painel.style.maxHeight !== "0px";
-            
-            document.querySelectorAll('.faq-panel').forEach(p => { p.style.maxHeight = "0px"; p.style.paddingTop = "0px"; });
-            document.querySelectorAll('.faq-trigger i').forEach(i => i.style.transform = "rotate(0deg)");
-
-            if (!estaAberto) {
-                painel.style.paddingTop = "10px";
-                painel.style.maxHeight = painel.scrollHeight + "px";
-                icone.style.transform = "rotate(180deg)";
+        function removerLoginGlobal() { localStorage.removeItem('tipoLogado'); window.location.reload(); }
+        function verificarEstadoLoginGlobal() {
+            const tipoLogado = localStorage.getItem('tipoLogado');
+            const areaDeslogado = document.getElementById('area-deslogado');
+            const areaLogada = document.getElementById('area-logada');
+            const avatar = document.getElementById('user-avatar');
+            if (tipoLogado) {
+                if(areaDeslogado) areaDeslogado.style.display = "none";
+                if(areaLogada) areaLogada.style.display = "block";
+                if(avatar) { avatar.innerText = tipoLogado === 'empresa' ? "E" : "U"; avatar.className = "user-avatar-btn " + (tipoLogado === 'empresa' ? "avatar-empresa" : "avatar-usuario"); }
             }
+        }
+        function toggleMenuDropdown() {
+            const dropdown = document.getElementById('dropdown-perfil-empresa');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
         }
     </script>
 </body>
