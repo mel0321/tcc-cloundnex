@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  StyleSheet, 
-  Text, 
-  View, 
-  TouchableOpacity, 
-  ScrollView, 
-  TextInput, 
-  Modal, 
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  TextInput,
+  Modal,
   Image,
   Alert
 } from 'react-native';
@@ -14,17 +14,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Feather, Ionicons } from '@expo/vector-icons';
 
 // IP DO COMPUTADOR DO LABORATÓRIO (Adaptador Ethernet 2)
-const API_URL = "http://192.168.100.254:3000/api"; 
+const API_URL = "http://192.168.100.254:3000/api";
 
 export default function App() {
-  const [telaAtual, setTelaAtual] = useState('Inicio'); 
-  const [tipoLogado, setTipoLogado] = useState(null); 
-  
+  const [telaAtual, setTelaAtual] = useState('Inicio');
+  const [tipoLogado, setTipoLogado] = useState(null);
+
   // Modais de Controle
   const [modalVisible, setModalVisible] = useState(false);
-  const [abaModal, setAbaModal] = useState('entrar'); 
-  const [perfilModal, setPerfilModal] = useState('usuario'); 
-  
+  const [abaModal, setAbaModal] = useState('entrar');
+  const [perfilModal, setPerfilModal] = useState('usuario');
+
   // Estado que gerencia o destino aberto
   const [destinoSelecionado, setDestinoSelecionado] = useState(null);
   const [modalDestinoVisible, setModalDestinoVisible] = useState(false);
@@ -36,7 +36,8 @@ export default function App() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [nome, setNome] = useState('');
-
+  const [usuarioLogado, setUsuarioLogado] = useState(null);
+  const [confirmarSenha, setConfirmarSenha] = useState('');
   // Estados da lista de destinos
   const [destinos, setDestinos] = useState([]);
   const [categoriaFiltro, setCategoriaFiltro] = useState('Todos');
@@ -56,7 +57,7 @@ export default function App() {
       // Requisição para o servidor rodando em Node.js
       const resposta = await fetch(`${API_URL}/places`);
       const dadosServidor = await resposta.json();
-      
+
       // Converte as propriedades do banco para o padrão que o seu visual espera
       const destinosFormatados = dadosServidor.map(place => ({
         id: place.id.toString(),
@@ -67,7 +68,7 @@ export default function App() {
         img: place.main_image,
         nMotora: place.accessibility_score,
         nVisual: 4.0, // Nota padrão inicial
-        comentarios: [] 
+        comentarios: []
       }));
 
       setDestinos(destinosFormatados);
@@ -78,32 +79,178 @@ export default function App() {
   };
 
   useEffect(() => {
-    carregarDadosDoServidor();
+
+    const iniciar = async () => {
+
+      const usuarioSalvo =
+        await AsyncStorage.getItem(
+          "usuario"
+        );
+
+      if (usuarioSalvo) {
+
+        const user =
+          JSON.parse(usuarioSalvo);
+
+        setUsuarioLogado(user);
+
+        setTipoLogado(
+          user.user_type === "BUSINESS"
+            ? "empresa"
+            : "usuario"
+        );
+      }
+
+      carregarDadosDoServidor();
+    };
+
+    iniciar();
   }, []);
 
   // Realizar o Login/Cadastro
   const lidarComAutenticacao = async () => {
+
     if (!email || !senha) {
-      Alert.alert("Erro", "Preencha todos os campos obrigatórios.");
+      Alert.alert("Erro", "Preencha email e senha.");
       return;
     }
+
     try {
-      await AsyncStorage.setItem('tipoLogado', perfilModal);
-      setTipoLogado(perfilModal);
+
+      const resposta = await fetch(`${API_URL}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email,
+          password: senha
+        })
+      });
+
+      const dados = await resposta.json();
+
+      if (!dados.success) {
+        Alert.alert("Erro", dados.message);
+        return;
+      }
+
+      await AsyncStorage.setItem(
+        "usuario",
+        JSON.stringify(dados.user)
+      );
+
+      setUsuarioLogado(dados.user);
+
+      const tipo =
+        dados.user.user_type === "BUSINESS"
+          ? "empresa"
+          : "usuario";
+
+      setTipoLogado(tipo);
+
+      Alert.alert(
+        "Sucesso",
+        `Bem-vindo ${dados.user.username}`
+      );
+
       setModalVisible(false);
-      setEmail(''); setSenha(''); setNome('');
-      Alert.alert("Sucesso", `Conectado como ${perfilModal === 'empresa' ? 'Empresa' : 'Usuário'}!`);
-    } catch (e) {
-      Alert.alert("Erro", "Não foi possível fazer login.");
+
+    } catch (erro) {
+
+      Alert.alert(
+        "Erro",
+        "Não foi possível conectar ao servidor."
+      );
+
     }
   };
+  //Criar Conta
+  const criarConta = async () => {
 
+    if (!nome || !email || !senha) {
+      Alert.alert(
+        "Erro",
+        "Preencha todos os campos."
+      );
+      return;
+    }
+
+    if (senha !== confirmarSenha) {
+      Alert.alert(
+        "Erro",
+        "As senhas não coincidem."
+      );
+      return;
+    }
+
+    try {
+
+      const resposta = await fetch(
+        `${API_URL}/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            username: nome,
+            email,
+            password: senha,
+            userType:
+              perfilModal === "empresa"
+                ? "BUSINESS"
+                : "TRAVELER"
+          })
+        }
+      );
+
+      const dados = await resposta.json();
+
+      if (!dados.success) {
+        Alert.alert(
+          "Erro",
+          dados.message
+        );
+        return;
+      }
+
+      Alert.alert(
+        "Sucesso",
+        "Conta criada com sucesso!"
+      );
+
+      setAbaModal("entrar");
+
+    } catch (erro) {
+
+      Alert.alert(
+        "Erro",
+        "Falha ao criar conta."
+      );
+
+    }
+  };
   // Logout
   const fazerLogout = async () => {
-    await AsyncStorage.removeItem('tipoLogado');
+
+    await AsyncStorage.removeItem(
+      "usuario"
+    );
+
+    await AsyncStorage.removeItem(
+      "tipoLogado"
+    );
+
+    setUsuarioLogado(null);
     setTipoLogado(null);
-    setTelaAtual('Inicio');
-    Alert.alert("Sair", "Você foi deslogado do sistema.");
+
+    setTelaAtual("Inicio");
+
+    Alert.alert(
+      "Logout",
+      "Sessão encerrada."
+    );
   };
 
   // Alternar Accordion dos Pilares
@@ -149,13 +296,13 @@ export default function App() {
         const mMotora = ((d.nMotora + nM) / 2).toFixed(1);
         const mVisual = ((d.nVisual + nV) / 2).toFixed(1);
 
-        const destinoAtualizado = { 
-          ...d, 
+        const destinoAtualizado = {
+          ...d,
           comentarios: novosComentarios,
           nMotora: parseFloat(mMotora),
           nVisual: parseFloat(mVisual)
         };
-        
+
         setDestinoSelecionado(destinoAtualizado);
         return destinoAtualizado;
       }
@@ -209,7 +356,7 @@ export default function App() {
         {tipoLogado ? (
           <TouchableOpacity style={[styles.avatar, tipoLogado === 'empresa' ? styles.avatarEmpresa : styles.avatarUsuario]} onPress={() => {
             Alert.alert(
-              "Minha Conta", 
+              "Minha Conta",
               `Logado como ${tipoLogado.toUpperCase()}`,
               [
                 { text: "Cancelar", style: "cancel" },
@@ -229,7 +376,7 @@ export default function App() {
 
       {/* CONTEÚDO DINÂMICO RENDERIZADO */}
       <ScrollView style={styles.conteudo}>
-        
+
         {/* TELA: INÍCIO */}
         {telaAtual === 'Inicio' && (
           <View style={styles.containerInicio}>
@@ -243,7 +390,7 @@ export default function App() {
 
             <View style={styles.secaoRecursos}>
               <Text style={styles.tituloSecao}>Por que usar o app?</Text>
-              
+
               <View style={styles.recursoItem}>
                 <View style={styles.wrapperIcone}>
                   <Feather name="search" size={22} color="#0055ff" />
@@ -276,9 +423,9 @@ export default function App() {
           <View style={{ padding: 15 }}>
             <View style={styles.searchSection}>
               <Feather style={styles.searchIcon} name="search" size={18} color="#64748b" />
-              <TextInput 
-                style={styles.inputBuscaMinimalista} 
-                placeholder="Digite o nome ou endereço..." 
+              <TextInput
+                style={styles.inputBuscaMinimalista}
+                placeholder="Digite o nome ou endereço..."
                 value={busca}
                 onChangeText={setBusca}
               />
@@ -286,8 +433,8 @@ export default function App() {
 
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginVertical: 15 }}>
               {['Todos', 'Restaurante', 'Hospedagem', 'Ponto Turístico'].map((cat) => (
-                <TouchableOpacity 
-                  key={cat} 
+                <TouchableOpacity
+                  key={cat}
                   style={[styles.btnFiltro, categoriaFiltro === cat && styles.btnFiltroAtivo]}
                   onPress={() => setCategoriaFiltro(cat)}
                 >
@@ -299,8 +446,8 @@ export default function App() {
             {destinos
               .filter(d => (categoriaFiltro === 'Todos' || d.categoria === categoriaFiltro) && d.nome.toLowerCase().includes(busca.toLowerCase()))
               .map(item => (
-                <TouchableOpacity 
-                  key={item.id} 
+                <TouchableOpacity
+                  key={item.id}
                   style={styles.card}
                   activeOpacity={0.9}
                   onPress={() => abrirDetalhesDestino(item)}
@@ -309,14 +456,14 @@ export default function App() {
                   <View style={styles.cardBody}>
                     <Text style={styles.cardTag}>{item.categoria}</Text>
                     <Text style={styles.cardTitulo}>{item.nome}</Text>
-                    
+
                     <View style={styles.inlineInfoRow}>
                       <Feather name="map-pin" size={13} color="#64748b" />
                       <Text style={styles.cardEnderecoMinimalista}>{item.endereco}</Text>
                     </View>
 
                     <Text style={styles.cardDesc}>{item.desc}</Text>
-                    
+
                     <View style={styles.badgeRow}>
                       <View style={styles.miniBadge}>
                         <Ionicons name="accessibility" size={14} color="#0055ff" />
@@ -326,8 +473,8 @@ export default function App() {
                         <Feather name="eye" size={14} color="#d97706" />
                         <Text style={styles.miniBadgeText}> Visual: {item.nVisual}</Text>
                       </View>
-                      <View style={[styles.miniBadge, {marginLeft: 'auto', backgroundColor: '#e0eaff'}]}>
-                        <Text style={[styles.miniBadgeText, {color: '#0055ff', fontWeight: '700'}]}>Ver Detalhes</Text>
+                      <View style={[styles.miniBadge, { marginLeft: 'auto', backgroundColor: '#e0eaff' }]}>
+                        <Text style={[styles.miniBadgeText, { color: '#0055ff', fontWeight: '700' }]}>Ver Detalhes</Text>
                       </View>
                     </View>
                   </View>
@@ -416,10 +563,10 @@ export default function App() {
                   <Text style={{ fontSize: 13, color: '#64748b' }}>{destinoSelecionado.endereco}</Text>
                 </View>
                 <Text style={{ fontSize: 15, color: '#475569', lineHeight: 22, marginBottom: 25 }}>{destinoSelecionado.desc}</Text>
-                
+
                 <View style={styles.divisor} />
                 <Text style={[styles.tituloSecao, { marginBottom: 15 }]}>Níveis de Acessibilidade</Text>
-                
+
                 <View style={{ marginBottom: 15 }}>
                   <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
                     <Text style={{ fontWeight: '600', color: '#051334' }}>♿ Acessibilidade Motora</Text>
@@ -462,14 +609,99 @@ export default function App() {
       <Modal visible={modalVisible} animationType="slide" transparent>
         <View style={styles.modalOverlay}>
           <View style={styles.modalCard}>
-            <TextInput style={styles.inputForm} placeholder="E-mail" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" />
-            <TextInput style={styles.inputForm} placeholder="Senha" value={senha} onChangeText={setSenha} secureTextEntry />
-            <TouchableOpacity style={styles.btnPrincipal} onPress={lidarComAutenticacao}>
-              <Text style={styles.btnPrincipalText}>Acessar Conta</Text>
+
+            <View style={{ flexDirection: 'row', marginBottom: 20 }}>
+              <TouchableOpacity onPress={() => setAbaModal('entrar')}>
+                <Text style={{
+                  fontWeight: abaModal === 'entrar' ? '700' : '400',
+                  marginRight: 20
+                }}>
+                  Entrar
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={() => setAbaModal('criar')}>
+                <Text style={{
+                  fontWeight: abaModal === 'criar' ? '700' : '400'
+                }}>
+                  Criar Conta
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            {abaModal === 'criar' && (
+              <TextInput
+                style={styles.inputForm}
+                placeholder="Nome"
+                value={nome}
+                onChangeText={setNome}
+              />
+            )}
+
+            <TextInput
+              style={styles.inputForm}
+              placeholder="Email"
+              value={email}
+              onChangeText={setEmail}
+            />
+
+            <TextInput
+              style={styles.inputForm}
+              placeholder="Senha"
+              secureTextEntry
+              value={senha}
+              onChangeText={setSenha}
+            />
+
+            {abaModal === 'criar' && (
+              <>
+                <TextInput
+                  style={styles.inputForm}
+                  placeholder="Confirmar Senha"
+                  secureTextEntry
+                  value={confirmarSenha}
+                  onChangeText={setConfirmarSenha}
+                />
+
+                <View style={{ flexDirection: 'row', marginBottom: 15 }}>
+                  <TouchableOpacity onPress={() => setPerfilModal('usuario')}>
+                    <Text>👤 Usuário</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={{ marginLeft: 20 }}
+                    onPress={() => setPerfilModal('empresa')}
+                  >
+                    <Text>🏢 Empresa</Text>
+                  </TouchableOpacity>
+                </View>
+              </>
+            )}
+
+            <TouchableOpacity
+              style={styles.btnPrincipal}
+              onPress={
+                abaModal === 'entrar'
+                  ? lidarComAutenticacao
+                  : criarConta
+              }
+            >
+              <Text style={styles.btnPrincipalText}>
+                {abaModal === 'entrar'
+                  ? 'Entrar'
+                  : 'Criar Conta'}
+              </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{ marginTop: 15 }} onPress={() => setModalVisible(false)}>
-              <Text style={{ color: '#64748b', textDecorationLine: 'underline' }}>Cancelar</Text>
+
+            <TouchableOpacity
+              style={{ marginTop: 15 }}
+              onPress={() => setModalVisible(false)}
+            >
+              <Text style={{ color: '#64748b' }}>
+                Cancelar
+              </Text>
             </TouchableOpacity>
+
           </View>
         </View>
       </Modal>
