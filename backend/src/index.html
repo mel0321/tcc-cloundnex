@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+git<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -102,8 +102,11 @@
             });
         });
 
+    // Usa a MESMA chave ('tipoLogado') que as outras páginas (destinos.html, acessibilidade.html...)
+    // Antes essa página usava a chave 'empresaLogada', diferente das outras, e por isso
+    // o login "sumia" quando o usuário navegava para outra página.
         function verificarEstadoLogin() {
-            const contaEmpresaAtiva = localStorage.getItem('empresaLogada') === 'true';
+            const contaEmpresaAtiva = localStorage.getItem('tipoLogado') === 'empresa';
             document.getElementById('area-deslogado').style.display = contaEmpresaAtiva ? "none" : "flex";
             document.getElementById('area-logada').style.display = contaEmpresaAtiva ? "block" : "none";
         }
@@ -113,16 +116,16 @@
             dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
         }
 
-        function simularLoginEmpresa() {
-            localStorage.setItem('empresaLogada', 'true');
+         function simularLoginEmpresa() {
+            localStorage.setItem('tipoLogado', 'empresa');
             verificarEstadoLogin();
             alert("Logado com Sucesso! Gerencie seu painel clicando na bolinha 'E'.");
         }
 
         function removerLoginEmpresa() {
-            localStorage.removeItem('empresaLogada');
+            localStorage.removeItem('tipoLogado');
             window.location.reload();
-        }
-    </script>
-</body>
+        }  
+        </script>
+    </body>
 </html>

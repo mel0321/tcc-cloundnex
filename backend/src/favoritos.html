@@ -59,41 +59,44 @@
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            carregarFavoritos();
-        });
+    document.addEventListener("DOMContentLoaded", function() {
+        carregarFavoritos();
+    });
 
-        function carregarFavoritos() {
-            const container = document.getElementById('container-favoritos');
-            const favoritos = JSON.parse(localStorage.getItem('listaFavoritos') || "[]");
+    function carregarFavoritos() {
+        const container = document.getElementById('container-favoritos');
+        // Usa a MESMA chave ('meusFavoritos') que detalhes.html usa para SALVAR os favoritos.
+        // Antes essa página lia da chave 'listaFavoritos', que nunca era preenchida por
+        // nenhuma outra página, então a lista de favoritos sempre aparecia vazia.
+        const favoritos = JSON.parse(localStorage.getItem('meusFavoritos') || "[]");
 
-            if(favoritos.length === 0) {
-                container.innerHTML = `<p style="color:#64748b; grid-column: 1/-1; text-align:center; padding: 40px 0;">Você ainda não possui nenhum destino salvo nos favoritos.</p>`;
-                return;
-            }
+        if(favoritos.length === 0) {
+            container.innerHTML = `<p style="color:#64748b; grid-column: 1/-1; text-align:center; padding: 40px 0;">Você ainda não possui nenhum destino salvo nos favoritos.</p>`;
+            return;
+        }
 
-            container.innerHTML = '';
-            favoritos.forEach(f => {
-                container.innerHTML += `
-                    <div class="destino-card" id="card-${f.nome}">
-                        <div class="destino-img-container">
-                            <img src="${f.img}" alt="${f.nome}">
-                        </div>
-                        <div class="card-body">
-                            <div class="card-title">${f.nome}</div>
-                            <button class="btn-remover" onclick="removerFavorito('${f.nome}')"><i class="fa-solid fa-trash"></i> Remover dos Favoritos</button>
-                        </div>
+        container.innerHTML = '';
+        favoritos.forEach(f => {
+            container.innerHTML += `
+                <div class="destino-card" id="card-${f.nome}">
+                    <div class="destino-img-container">
+                        <img src="${f.img}" alt="${f.nome}">
                     </div>
-                `;
-            });
-        }
+                    <div class="card-body">
+                        <div class="card-title">${f.nome}</div>
+                        <button class="btn-remover" onclick="removerFavorito('${f.nome}')"><i class="fa-solid fa-trash"></i> Remover dos Favoritos</button>
+                    </div>
+                </div>
+            `;
+        });
+    }
 
-        function removerFavorito(nome) {
-            let favoritos = JSON.parse(localStorage.getItem('listaFavoritos') || "[]");
-            favoritos = favoritos.filter(f => f.nome !== nome);
-            localStorage.setItem('listaFavoritos', JSON.stringify(favoritos));
-            carregarFavoritos();
-        }
-    </script>
+    function removerFavorito(nome) {
+        let favoritos = JSON.parse(localStorage.getItem('meusFavoritos') || "[]");
+        favoritos = favoritos.filter(f => f.nome !== nome);
+        localStorage.setItem('meusFavoritos', JSON.stringify(favoritos));
+        carregarFavoritos();
+    }
+</script>
 </body>
 </html>

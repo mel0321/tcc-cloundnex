@@ -65,16 +65,56 @@ server.get('/api/places', async (req, res) => {
     }
 });
 
-// Exemplo de estrutura básica para rotas de autenticação futuramente
-server.post('/api/auth/register', async (req, res) => {
-    const { username, email, password, user_type } = req.body;
+// Rota de CADASTRO
+// Obs: o app mobile chama "${API_URL}/register", por isso a rota é '/api/register'
+// (antes estava '/api/auth/register', e por isso o app nunca conseguia cadastrar)
+server.post('/api/register', async (req, res) => {
+    // Obs: o app mobile envia o campo "userType" (e não "user_type")
+    const { username, email, password, userType } = req.body;
+
+    if (!username || !email || !password || !userType) {
+        return res.status(400).json({ success: false, message: "Preencha todos os campos." });
+    }
+
     try {
         await db.run(`
             INSERT INTO users (username, email, password, user_type)
             VALUES (?, ?, ?, ?)
-        `, [username, email, password, user_type]);
-        res.status(201).json({ mensagem: "Usuário registrado com sucesso!" });
+        `, [username, email, password, userType]);
+
+        res.status(201).json({ success: true, message: "Usuário registrado com sucesso!" });
     } catch (erro) {
-        res.status(500).json({ erro: "Erro ao registrar usuário" });
+        // Erro comum: e-mail duplicado (a coluna email é UNIQUE no banco)
+        if (erro.message && erro.message.includes('UNIQUE')) {
+            return res.status(400).json({ success: false, message: "Esse e-mail já está cadastrado." });
+        }
+        res.status(500).json({ success: false, message: "Erro ao registrar usuário." });
+    }
+});
+
+// Rota de LOGIN (não existia antes — por isso o login nunca funcionava)
+server.post('/api/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        return res.status(400).json({ success: false, message: "Preencha e-mail e senha." });
+    }
+
+    try {
+        const usuario = await db.get(
+            "SELECT * FROM users WHERE email = ? AND password = ?",
+            [email, password]
+        );
+
+        if (!usuario) {
+            return res.status(401).json({ success: false, message: "E-mail ou senha incorretos." });
+        }
+
+        // Não devolvemos a senha para o app, só os dados necessários
+        const { password: _senha, ...usuarioSemSenha } = usuario;
+
+        res.json({ success: true, user: usuarioSemSenha });
+    } catch (erro) {
+        res.status(500).json({ success: false, message: "Erro ao tentar fazer login." });
     }
 });
