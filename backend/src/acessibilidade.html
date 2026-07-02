@@ -85,7 +85,6 @@
                     <div id="user-avatar" class="user-avatar-btn" onclick="toggleMenuDropdown()">?</div>
                     <div class="dropdown-menu" id="dropdown-perfil-empresa">
                         <a href="dashboard-negocio.html" id="link-painel-empresa"><i class="fa-solid fa-sliders"></i> Painel Empresa</a>
-                        <a href="favoritos.html"><i class="fa-solid fa-bookmark"></i> Meus Favoritos</a>
                         <div class="divider"></div>
                         <a href="#" onclick="removerLoginGlobal(); return false;" style="color: #ef4444;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair</a>
                     </div>
@@ -159,34 +158,84 @@
 
         document.addEventListener("DOMContentLoaded", function() {
             verificarEstadoLoginGlobal();
+            
+            window.addEventListener('click', function(e) {
+                const dropdown = document.getElementById('dropdown-perfil-empresa');
+                const avatarBtn = document.getElementById('user-avatar');
+                if (dropdown && !dropdown.contains(e.target) && avatarBtn && !avatarBtn.contains(e.target)) {
+                    dropdown.style.display = 'none';
+                }
+            });
         });
 
-        function abrirModalLogin() { document.getElementById('modalLogin').style.display = 'flex'; }
+        function abrirModalLogin() { 
+            document.getElementById('modalLogin').style.display = 'flex'; 
+            mudarAbaModal('entrar'); 
+            selecionarPerfilModal('usuario');
+        }
+
         function fecharModalLogin() { document.getElementById('modalLogin').style.display = 'none'; }
+        
         function mudarAbaModal(modo) {
             modoAtual = modo;
+            const tabEntrar = document.getElementById('tab-entrar');
+            const tabCadastrar = document.getElementById('tab-cadastrar');
             const campoNome = document.getElementById('campo-nome-cadastro');
-            if(modo === 'entrar') { campoNome.style.display = 'none'; } else { campoNome.style.display = 'block'; }
+            if(modo === 'entrar') {
+                tabEntrar.style.color = '#0055ff'; tabCadastrar.style.color = '#64748b'; campoNome.style.display = 'none';
+            } else {
+                tabCadastrar.style.color = '#0055ff'; tabEntrar.style.color = '#64748b'; campoNome.style.display = 'block';
+            }
         }
-        function selecionarPerfilModal(perfil) { perfilSelecionado = perfil; }
+
+        function selecionarPerfilModal(perfil) {
+            perfilSelecionado = perfil;
+            const btnUsuario = document.getElementById('perfil-usuario');
+            const btnEmpresa = document.getElementById('perfil-empresa');
+            if(perfil === 'usuario') {
+                btnUsuario.style.borderColor = '#0055ff'; btnUsuario.style.background = '#f0f5ff'; btnUsuario.style.color = '#0055ff';
+                btnEmpresa.style.borderColor = '#e2e8f0'; btnEmpresa.style.background = '#ffffff'; btnEmpresa.style.color = '#475569';
+            } else {
+                btnEmpresa.style.borderColor = '#0055ff'; btnEmpresa.style.background = '#f0f5ff'; btnEmpresa.style.color = '#0055ff';
+                btnUsuario.style.borderColor = '#e2e8f0'; btnUsuario.style.background = '#ffffff'; btnUsuario.style.color = '#475569';
+            }
+        }
+
         function processarAutenticacao(event) {
             event.preventDefault();
             localStorage.setItem('tipoLogado', perfilSelecionado);
             fecharModalLogin();
+            verificarEstadoLoginGlobal();
+        }
+
+        function removerLoginGlobal() {
+            localStorage.removeItem('tipoLogado');
             window.location.reload();
         }
-        function removerLoginGlobal() { localStorage.removeItem('tipoLogado'); window.location.reload(); }
+
         function verificarEstadoLoginGlobal() {
             const tipoLogado = localStorage.getItem('tipoLogado');
             const areaDeslogado = document.getElementById('area-deslogado');
             const areaLogada = document.getElementById('area-logada');
             const avatar = document.getElementById('user-avatar');
+            const linkEmpresa = document.getElementById('link-painel-empresa');
+
             if (tipoLogado) {
                 if(areaDeslogado) areaDeslogado.style.display = "none";
                 if(areaLogada) areaLogada.style.display = "block";
-                if(avatar) { avatar.innerText = tipoLogado === 'empresa' ? "E" : "U"; avatar.className = "user-avatar-btn " + (tipoLogado === 'empresa' ? "avatar-empresa" : "avatar-usuario"); }
+                if(tipoLogado === 'empresa') {
+                    if(avatar) { avatar.innerText = "E"; avatar.className = "user-avatar-btn avatar-empresa"; }
+                    if(linkEmpresa) linkEmpresa.style.display = "block";
+                } else {
+                    if(avatar) { avatar.innerText = "U"; avatar.className = "user-avatar-btn avatar-usuario"; }
+                    if(linkEmpresa) linkEmpresa.style.display = "none";
+                }
+            } else {
+                if(areaDeslogado) areaDeslogado.style.display = "flex";
+                if(areaLogada) areaLogada.style.display = "none";
             }
         }
+
         function toggleMenuDropdown() {
             const dropdown = document.getElementById('dropdown-perfil-empresa');
             dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';

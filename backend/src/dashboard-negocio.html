@@ -152,7 +152,10 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            if(localStorage.getItem('tipoLogado') !== 'empresa') window.location.href = "destinos.html";
+            // Trava de segurança: Se tentar forçar entrada deslogado ou como usuário comum, joga pra fora
+            if(localStorage.getItem('tipoLogado') !== 'empresa') {
+                window.location.href = "destinos.html";
+            }
             window.addEventListener('click', function(e) {
                 const dropdown = document.getElementById('dropdown-perfil-empresa');
                 if (dropdown && !dropdown.contains(e.target) && !document.getElementById('user-avatar').contains(e.target)) dropdown.style.display = 'none';
@@ -188,7 +191,7 @@
             let banco = JSON.parse(localStorage.getItem('bancoDestinos')) || [];
             banco.push(novo);
             localStorage.setItem('bancoDestinos', JSON.stringify(banco));
-            alert("Sucesso!");
+            alert("Estabelecimento publicado com sucesso!");
             window.location.href = "destinos.html";
         }
     </script>

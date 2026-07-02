@@ -111,9 +111,13 @@
             
             if(localAtual.mapa) document.getElementById('local-mapa').src = localAtual.mapa;
 
+            // Mantém o estado sincronizado com as outras páginas
             if (localStorage.getItem('tipoLogado')) {
                 document.getElementById('caixa-criar-comentario').style.display = "block";
                 document.getElementById('msg-login-comentario').style.display = "none";
+            } else {
+                document.getElementById('caixa-criar-comentario').style.display = "none";
+                document.getElementById('msg-login-comentario').style.display = "block";
             }
             atualizarBotaoFavoritoUI();
             renderizarComentarios();
@@ -131,7 +135,11 @@
         function adicionarComentario() {
             const texto = document.getElementById('txt-comentario').value.trim();
             if(!texto) return;
-            const novo = { autor: "Membro da Comunidade", data: new Date().toLocaleDateString('pt-BR'), texto: texto };
+            
+            const tipoLogado = localStorage.getItem('tipoLogado');
+            const autorNome = tipoLogado === 'empresa' ? "Empresa Parceira" : "Membro da Comunidade";
+
+            const novo = { autor: autorNome, data: new Date().toLocaleDateString('pt-BR'), texto: texto };
             let banco = JSON.parse(localStorage.getItem('bancoDestinos')) || [];
             const idx = banco.findIndex(l => l.nome === localAtual.nome);
             if(idx !== -1) {
@@ -152,7 +160,7 @@
             atualizarBotaoFavoritoUI();
         }
 
-        function actualizarBotaoFavoritoUI() {
+        function atualizarBotaoFavoritoUI() {
             const favs = JSON.parse(localStorage.getItem('meusFavoritos')) || [];
             const btn = document.getElementById('btnFavOriginal');
             if(favs.some(f => f.nome === localAtual.nome)) { btn.classList.add('ativo'); btn.innerHTML = `<i class="fa-solid fa-bookmark"></i> Favoritado`; } else { btn.classList.remove('ativo'); btn.innerHTML = `<i class="fa-solid fa-bookmark"></i> Favoritar`; }

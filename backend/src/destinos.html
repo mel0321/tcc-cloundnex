@@ -92,7 +92,6 @@
                     <div id="user-avatar" class="user-avatar-btn" onclick="toggleMenuDropdown()">?</div>
                     <div class="dropdown-menu" id="dropdown-perfil-empresa">
                         <a href="dashboard-negocio.html" id="link-painel-empresa"><i class="fa-solid fa-sliders"></i> Painel Empresa</a>
-                        <a href="favoritos.html"><i class="fa-solid fa-bookmark"></i> Meus Favoritos</a>
                         <div class="divider"></div>
                         <a href="#" onclick="removerLoginGlobal(); return false;" style="color: #ef4444;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair</a>
                     </div>
@@ -157,8 +156,8 @@
 
             if (!localStorage.getItem('bancoDestinos')) {
                 const basePadrao = [
-                    { nome: "Restaurante Central", categoria: "Restaurante", endereco: "Rua das Flores, Centro 123 - SP", desc: "Cozinha contemporânea com foco em inclusão e conforto para todos os públicos.", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500", notaGeral: "4.8", nMotora: "4.8", nVisual: "4.5", comentariosLista: [] },
-                    { nome: "Hotel Paraíso Acessível", categoria: "Hospedagem", endereco: "Av Oceanica, 450 - BA", desc: "Quartos amplos adaptados e rampa com acesso direto à areia da praia.", img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=500", notaGeral: "5.0", nMotora: "5.0", nVisual: "4.0", comentariosLista: [] }
+                    { nome: "Restaurante Central", categoria: "Restaurante", endereco: "Rua das Flores, Centro 123 - SP", desc: "Cozinha contemporânea com rampa e banheiros adaptados.", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500", notaGeral: "4.8", nMotora: "4.8", nVisual: "4.5", comentariosLista: [] },
+                    { nome: "Hotel Paraíso Acessível", categoria: "Hospedagem", endereco: "Av Oceanica, 450 - BA", desc: "Quartos amplos adaptados e elevadores panorâmicos táteis.", img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=500", notaGeral: "5.0", nMotora: "5.0", nVisual: "4.0", comentariosLista: [] }
                 ];
                 localStorage.setItem('bancoDestinos', JSON.stringify(basePadrao));
             }
@@ -173,7 +172,11 @@
             });
         });
 
-        function abrirModalLogin() { document.getElementById('modalLogin').style.display = 'flex'; mudarAbaModal('entrar'); }
+        function abrirModalLogin() { 
+            document.getElementById('modalLogin').style.display = 'flex'; 
+            mudarAbaModal('entrar');
+            selecionarPerfilModal('usuario');
+        }
         function fecharModalLogin() { document.getElementById('modalLogin').style.display = 'none'; }
 
         function mudarAbaModal(modo) {
@@ -201,11 +204,11 @@
             const btnUsuario = document.getElementById('perfil-usuario');
             const btnEmpresa = document.getElementById('perfil-empresa');
             if(perfil === 'usuario') {
-                btnUsuario.style.borderColor = '#0055ff'; btnUsuario.style.background = '#f0f5ff';
-                btnEmpresa.style.borderColor = '#e2e8f0'; btnEmpresa.style.background = '#ffffff';
+                btnUsuario.style.borderColor = '#0055ff'; btnUsuario.style.background = '#f0f5ff'; btnUsuario.style.color = '#0055ff';
+                btnEmpresa.style.borderColor = '#e2e8f0'; btnEmpresa.style.background = '#ffffff'; btnEmpresa.style.color = '#475569';
             } else {
-                btnEmpresa.style.borderColor = '#0055ff'; btnEmpresa.style.background = '#f0f5ff';
-                btnUsuario.style.borderColor = '#e2e8f0'; btnUsuario.style.background = '#ffffff';
+                btnEmpresa.style.borderColor = '#0055ff'; btnEmpresa.style.background = '#f0f5ff'; btnEmpresa.style.color = '#0055ff';
+                btnUsuario.style.borderColor = '#e2e8f0'; btnUsuario.style.background = '#ffffff'; btnUsuario.style.color = '#475569';
             }
         }
 
@@ -213,7 +216,7 @@
             event.preventDefault();
             localStorage.setItem('tipoLogado', perfilSelecionado);
             fecharModalLogin();
-            window.location.reload();
+            verificarEstadoLoginGlobal();
         }
 
         function removerLoginGlobal() {
@@ -229,18 +232,18 @@
             const linkEmpresa = document.getElementById('link-painel-empresa');
 
             if (tipoLogado) {
-                areaDeslogado.style.display = "none";
-                areaLogada.style.display = "block";
+                if(areaDeslogado) areaDeslogado.style.display = "none";
+                if(areaLogada) areaLogada.style.display = "block";
                 if(tipoLogado === 'empresa') {
-                    avatar.innerText = "E"; avatar.className = "user-avatar-btn avatar-empresa";
+                    if(avatar) { avatar.innerText = "E"; avatar.className = "user-avatar-btn avatar-empresa"; }
                     if(linkEmpresa) linkEmpresa.style.display = "block";
                 } else {
-                    avatar.innerText = "U"; avatar.className = "user-avatar-btn avatar-usuario";
+                    if(avatar) { avatar.innerText = "U"; avatar.className = "user-avatar-btn avatar-usuario"; }
                     if(linkEmpresa) linkEmpresa.style.display = "none";
                 }
             } else {
-                areaDeslogado.style.display = "flex";
-                areaLogada.style.display = "none";
+                if(areaDeslogado) areaDeslogado.style.display = "flex";
+                if(areaLogada) areaLogada.style.display = "none";
             }
         }
 
