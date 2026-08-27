@@ -1,0 +1,89 @@
+Enum user_type_enum {
+  TRAVELER
+  BUSINESS
+}
+
+Enum category_enum {
+  ACCOMMODATION
+  GASTRONOMY
+  TOURIST_ATTRACTION
+  OTHERS
+}
+
+Enum accessibility_level_enum {
+  POOR
+  GOOD
+  EXCELLENT
+}
+
+Table users {
+  id integer [primary key, increment]
+  username text [not null]
+  email text [not null, unique]
+  password text [not null]
+  user_type user_type_enum [not null]
+  created_at text [not null, default: `CURRENT_TIMESTAMP`]
+  updated_at text [not null, default: `CURRENT_TIMESTAMP`]
+}
+
+Table traveler_profiles {
+  id integer [primary key, increment]
+  user_id integer [not null, unique, ref: - users.id]
+  full_name text [not null]
+  profile_picture text
+  created_at text [not null, default: `CURRENT_TIMESTAMP`]
+  updated_at text [not null, default: `CURRENT_TIMESTAMP`]
+}
+
+Table places {
+  id integer [primary key, increment]
+  business_owner_id integer [not null, ref: > users.id]
+  establishment_name text [not null]
+  category category_enum [not null]
+  full_address text [not null]
+  cep text [not null]
+  city text [not null]
+  state text [not null]
+  description text
+  price_per_night numeric [not null, note: 'Valor salvo em centavos']
+  accessibility_score real [default: 0.0]
+  main_image text
+  created_at text [not null, default: `CURRENT_TIMESTAMP`]
+  updated_at text [not null, default: `CURRENT_TIMESTAMP`]
+}
+
+Table place_accessibilities {
+  id integer [primary key, increment]
+  place_id integer [not null, unique, ref: - places.id]
+  has_access_ramp integer [not null, default: 0]
+  has_adapted_bathroom integer [not null, default: 0]
+  allows_guide_dog integer [not null, default: 0]
+  has_braille_signage integer [not null, default: 0]
+  has_sign_language_interpreter integer [not null, default: 0]
+  has_asd_friendly_space integer [not null, default: 0]
+  created_at text [not null, default: `CURRENT_TIMESTAMP`]
+  updated_at text [not null, default: `CURRENT_TIMESTAMP`]
+}
+
+Table reviews {
+  id integer [primary key, increment]
+  place_id integer [not null, ref: > places.id]
+  traveler_id integer [not null, ref: > users.id]
+  experience_rating integer [not null]
+  accessibility_level accessibility_level_enum [not null]
+  comment_text text
+  owner_reply_text text
+  created_at text [not null, default: `CURRENT_TIMESTAMP`]
+  updated_at text [not null, default: `CURRENT_TIMESTAMP`]
+}
+
+Table favorites {
+  traveler_id integer [not null, ref: > users.id]
+  place_id integer [not null, ref: > places.id]
+  created_at text [not null, default: `CURRENT_TIMESTAMP`]
+  updated_at text [not null, default: `CURRENT_TIMESTAMP`]
+
+  Indexes {
+    (traveler_id, place_id) [pk]
+  }
+}
